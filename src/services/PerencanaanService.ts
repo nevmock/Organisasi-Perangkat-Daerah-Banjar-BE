@@ -17,14 +17,14 @@ export class PerencanaanService {
         opd_pelaksana: string,
         tgl_mulai: Date,
         target: string,
-        indikator_labels: string[]
+        indikator_labels?: string[]
     }) {
-        const { indikator_labels, ...perencanaanData } = data;
-
+        const { indikator_labels = [], ...perencanaanData } = data;
+    
         const perencanaan = await this.repo.create(perencanaanData);
-
+    
         const indikatorIds = [];
-
+    
         for (const label of indikator_labels) {
             const indikator = await IndikatorModel.create({
                 indikator_label: label,
@@ -32,11 +32,10 @@ export class PerencanaanService {
             });
             indikatorIds.push(indikator._id);
         }
-
+    
         await perencanaan.updateOne({ $set: { indikators: indikatorIds } });
-
+    
         return await this.repo.findById(perencanaan._id.toString());
-
     }
 
     async updatePerencanaan(id: string, data: any) {
