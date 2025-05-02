@@ -13,3 +13,16 @@ Content-Type: application/json
     "Pembangunan saluran"
   ]
 }
+
+
+###
+PUT http://localhost:5050/api/indikator/681523832bb02be95a711833
+Content-Type: application/json
+
+{
+"indikator_label": "Survey awal lagi",
+"sudah_selesai": false,
+"evidence": [],
+"kesimpulan_tindakan": "asdas",
+"kendala": "asdad"
+}
