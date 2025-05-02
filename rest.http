@@ -1,2 +1,15 @@
 ###
-GET http://localhost:5050/
+POST http://localhost:5050/api/perencanaan
+Content-Type: application/json
+
+{
+  "nama_program": "Program Irigasi",
+  "opd_pelaksana": "Dinas Pertanian",
+  "tgl_mulai": "2025-07-01",
+  "target": "Selesai Q3",
+  "indikator_labels": [
+    "Survey awal",
+    "Koordinasi warga",
+    "Pembangunan saluran"
+  ]
+}

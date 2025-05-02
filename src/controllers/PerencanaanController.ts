@@ -24,13 +24,15 @@ export class PerencanaanController {
 
     create = async (req: Request, res: Response) => {
         try {
+            console.log('📦 Payload DITERIMA:', req.body); // ⬅ debug dulu di sini
             const data = await this.service.createPerencanaanWithIndikators(req.body);
             res.status(201).json(data);
         } catch (err) {
-            console.error(err);
+            console.error('❌ ERROR createPerencanaan:', err);
             res.status(500).json({ error: 'Failed to create perencanaan with indicators' });
         }
     };
+
 
     update = async (req: Request, res: Response) => {
         try {
