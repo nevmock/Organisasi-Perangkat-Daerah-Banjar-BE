@@ -5,7 +5,7 @@ const perencanaanSchema = new mongoose.Schema({
     opd_pelaksana: { type: String, required: true },
     tgl_mulai: { type: Date, required: true },
     target: { type: String, required: true },
-    indikators: { type: [String], required: true },
+    indikators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Indikator' }]
 }, { timestamps: true });
 
 export const PerencanaanModel = mongoose.model('Perencanaan', perencanaanSchema);

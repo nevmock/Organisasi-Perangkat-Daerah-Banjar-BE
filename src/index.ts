@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { connectDB } from './config/mongoose';
 import perencanaanRoutes from './routes/perencanaanRoutes';
+import indikatorRoutes from './routes/indikatorRoutes';
 
 dotenv.config();
 const app = express();
@@ -17,6 +18,7 @@ app.use(express.json());
 connectDB();
 
 app.use('/api/perencanaan', perencanaanRoutes);
+app.use('/api/indikator', indikatorRoutes);
 
 app.get('/', (_, res) => {
     res.send('API siap jalan 🛠️');
