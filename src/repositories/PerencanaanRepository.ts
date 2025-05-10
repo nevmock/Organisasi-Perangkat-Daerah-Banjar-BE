@@ -2,11 +2,12 @@ import { PerencanaanModel } from '../models/PerencanaanModel';
 
 export class PerencanaanRepository {
     async findAll() {
-        return PerencanaanModel.find().sort({ createdAt: -1 }).populate('indikators');
+        return PerencanaanModel.find()
+            .sort({ createdAt: -1 });
     }
 
     async findById(id: string) {
-        return PerencanaanModel.findById(id).populate('indikators');
+        return PerencanaanModel.findById(id);
     }
 
     async create(data: any) {

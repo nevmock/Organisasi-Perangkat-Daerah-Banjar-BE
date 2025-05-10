@@ -4,7 +4,7 @@ import { PerencanaanService } from '../services/PerencanaanService';
 export class PerencanaanController {
     private service = new PerencanaanService();
 
-    getAll = async (req: Request, res: Response) => {
+    getAll = async (_req: Request, res: Response) => {
         try {
             const data = await this.service.getAllPerencanaans();
             res.json(data);
@@ -24,15 +24,13 @@ export class PerencanaanController {
 
     create = async (req: Request, res: Response) => {
         try {
-            console.log('📦 Payload DITERIMA:', req.body); // ⬅ debug dulu di sini
             const data = await this.service.createPerencanaanWithIndikators(req.body);
             res.status(201).json(data);
         } catch (err) {
-            console.error('❌ ERROR createPerencanaan:', err);
+            console.error(err);
             res.status(500).json({ error: 'Failed to create perencanaan with indicators' });
         }
     };
-
 
     update = async (req: Request, res: Response) => {
         try {

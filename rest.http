@@ -1,5 +1,18 @@
+
+### PERENCANAAN
+
+# Get All Perencanaan
+GET http://localhost:3000/api/perencanaan
+
 ###
-POST http://localhost:5050/api/perencanaan
+
+# Get Perencanaan by ID
+GET http://localhost:3000/api/perencanaan/{{perencanaan_id}}
+
+###
+
+# Create Perencanaan
+POST http://localhost:3000/api/perencanaan
 Content-Type: application/json
 
 {
@@ -14,15 +27,101 @@ Content-Type: application/json
   ]
 }
 
-
 ###
-PUT http://localhost:5050/api/indikator/681523832bb02be95a711833
+
+# Update Perencanaan
+PUT http://localhost:3000/api/perencanaan/{{perencanaan_id}}
 Content-Type: application/json
 
 {
-"indikator_label": "Survey awal lagi",
-"sudah_selesai": false,
-"evidence": [],
-"kesimpulan_tindakan": "asdas",
-"kendala": "asdad"
+  "target": "Selesai dalam 3 bulan"
+}
+
+###
+
+# Delete Perencanaan
+DELETE http://localhost:3000/api/perencanaan/{{perencanaan_id}}
+
+###
+
+### INDIKATOR
+
+# Get All Indikator
+GET http://localhost:3000/api/indikator
+
+###
+
+# Get Indikator by ID
+GET http://localhost:3000/api/indikator/{{indikator_id}}
+
+###
+
+# Create Indikator
+POST http://localhost:3000/api/indikator
+Content-Type: application/json
+
+{
+  "indikator_label": "Laporan akhir",
+  "id_perencanaan": "{{perencanaan_id}}"
+}
+
+###
+
+# Update Indikator
+PUT http://localhost:3000/api/indikator/{{indikator_id}}
+Content-Type: application/json
+
+{
+  "sudah_selesai": true,
+  "kendala": "Hujan deras",
+  "kesimpulan_tindakan": "Perlu dijadwal ulang",
+  "evidence": [
+    "http://localhost:3000/public/evidence/indikator/peren_id/indikator_id/evidence-1715.jpg"
+  ]
+}
+
+###
+
+# Delete Indikator
+DELETE http://localhost:3000/api/indikator/{{indikator_id}}
+
+###
+
+# Upload Evidence Indikator
+POST http://localhost:3000/api/indikator/{{indikator_id}}/upload-evidence
+Content-Type: multipart/form-data
+
+# Form-data:
+#   - evidence: (File)
+#   - id_perencanaan: {{perencanaan_id}}
+
+###
+
+# Delete Evidence Indikator
+DELETE http://localhost:3000/api/indikator/{{indikator_id}}/remove-evidence
+Content-Type: application/json
+
+{
+  "url": "http://localhost:3000/public/evidence/indikator/peren_id/indikator_id/evidence-1715.jpg"
+}
+
+###
+
+### AMPLIFIKASI
+
+# Upload Evidence Amplifikasi
+POST http://localhost:3000/api/amplifikasi/{{amplifikasi_id}}/upload-evidence
+Content-Type: multipart/form-data
+
+# Form-data:
+#   - evidence: (File)
+
+###
+
+# Delete Evidence Amplifikasi
+DELETE http://localhost:3000/api/amplifikasi/{{amplifikasi_id}}/remove-evidence
+Content-Type: application/json
+
+{
+  "url": "http://localhost:3000/public/evidence/amplifikasi/amplifikasi_id/evidence-1715.jpg"
 }

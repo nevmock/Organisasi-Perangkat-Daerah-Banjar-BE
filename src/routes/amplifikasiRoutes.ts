@@ -1,9 +1,9 @@
 import express from 'express';
-import { IndikatorController } from '../controllers/IndikatorController';
-import { uploadEvidence } from '../middlewares/upload';
+import { AmplifikasiController } from '../controllers/AmplifikasiController';
+import { uploadAmplifikasiEvidence } from '../middlewares/upload';
 
 const router = express.Router();
-const controller = new IndikatorController();
+const controller = new AmplifikasiController();
 
 router.get('/perencanaan/:perencanaanId', controller.getByPerencanaan);
 router.get('/', controller.getAll);
@@ -20,7 +20,7 @@ router.delete('/:id', controller.delete);
 
 router.post(
     '/:id/upload-evidence',
-    uploadEvidence.array('evidence', 10),
+    uploadAmplifikasiEvidence.array('evidence', 10),
     controller.uploadEvidence
 );
 
