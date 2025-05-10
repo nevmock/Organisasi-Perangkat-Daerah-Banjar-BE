@@ -5,11 +5,11 @@ export class PerencanaanService {
     private repo = new PerencanaanRepository();
 
     async getAllPerencanaans() {
-        return this.repo.findAll(); // populate
+        return this.repo.findAll(); // no populate
     }
 
     async getPerencanaan(id: string) {
-        return this.repo.findById(id); // populate
+        return this.repo.findById(id); // no populate
     }
 
     async createPerencanaanWithIndikators(data: {
@@ -20,22 +20,16 @@ export class PerencanaanService {
         indikator_labels?: string[]
     }) {
         const { indikator_labels = [], ...perencanaanData } = data;
-    
         const perencanaan = await this.repo.create(perencanaanData);
-    
-        const indikatorIds = [];
-    
+
         for (const label of indikator_labels) {
-            const indikator = await IndikatorModel.create({
+            await IndikatorModel.create({
                 indikator_label: label,
                 id_perencanaan: perencanaan._id
             });
-            indikatorIds.push(indikator._id);
         }
-    
-        await perencanaan.updateOne({ $set: { indikators: indikatorIds } });
-    
-        return await this.repo.findById(perencanaan._id.toString());
+
+        return this.repo.findById(perencanaan._id.toString());
     }
 
     async updatePerencanaan(id: string, data: any) {

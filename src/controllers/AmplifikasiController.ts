@@ -1,25 +1,25 @@
 import { Request, Response } from 'express';
-import { IndikatorService } from '../services/IndikatorService';
+import { AmplifikasiService } from '../services/AmplifikasiService';
 import { buildEvidenceUrls } from '../utils/buildEvidenceUrl';
 
-export class IndikatorController {
-    private service = new IndikatorService();
+export class AmplifikasiController {
+    private service = new AmplifikasiService();
 
     getAll = async (_req: Request, res: Response) => {
         try {
-            const data = await this.service.getAllIndikators();
+            const data = await this.service.getAllAmplifikasis();
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Failed to fetch indikator' });
+            res.status(500).json({ error: 'Failed to fetch Amplifikasi' });
         }
     };
 
     getById = async (req: Request, res: Response) => {
         try {
-            const data = await this.service.getIndikator(req.params.id);
+            const data = await this.service.getAmplifikasi(req.params.id);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Failed to fetch indikator' });
+            res.status(500).json({ error: 'Failed to fetch Amplifikasi' });
         }
     };
 
@@ -28,34 +28,34 @@ export class IndikatorController {
             const data = await this.service.getByPerencanaan(req.params.perencanaanId);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Failed to fetch indikator by perencanaan' });
+            res.status(500).json({ error: 'Failed to fetch Amplifikasi by perencanaan' });
         }
     };
 
     create = async (req: Request, res: Response) => {
         try {
-            const data = await this.service.createIndikator(req.body);
+            const data = await this.service.createAmplifikasi(req.body);
             res.status(201).json(data);
-        } catch {
-            res.status(500).json({ error: 'Failed to create indikator' });
+        } catch (err) {
+            res.status(500).json({ error: 'Failed to create Amplifikasi' });
         }
     };
 
     update = async (req: Request, res: Response) => {
         try {
-            const data = await this.service.updateIndikator(req.params.id, req.body);
+            const data = await this.service.updateAmplifikasi(req.params.id, req.body);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Failed to update indikator' });
+            res.status(500).json({ error: 'Failed to update Amplifikasi' });
         }
     };
 
     delete = async (req: Request, res: Response) => {
         try {
-            await this.service.deleteIndikator(req.params.id);
+            await this.service.deleteAmplifikasi(req.params.id);
             res.json({ message: 'Deleted' });
         } catch {
-            res.status(500).json({ error: 'Failed to delete indikator' });
+            res.status(500).json({ error: 'Failed to delete Amplifikasi' });
         }
     };
 
