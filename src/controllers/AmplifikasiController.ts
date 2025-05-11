@@ -23,24 +23,6 @@ export class AmplifikasiController {
         }
     };
 
-    getByPerencanaan = async (req: Request, res: Response) => {
-        try {
-            const data = await this.service.getByPerencanaan(req.params.perencanaanId);
-            res.json(data);
-        } catch {
-            res.status(500).json({ error: 'Failed to fetch Amplifikasi by perencanaan' });
-        }
-    };
-
-    create = async (req: Request, res: Response) => {
-        try {
-            const data = await this.service.createAmplifikasi(req.body);
-            res.status(201).json(data);
-        } catch (err) {
-            res.status(500).json({ error: 'Failed to create Amplifikasi' });
-        }
-    };
-
     update = async (req: Request, res: Response) => {
         try {
             const data = await this.service.updateAmplifikasi(req.params.id, req.body);
@@ -80,6 +62,28 @@ export class AmplifikasiController {
         }
     };
 
+    uploadThumbnail = async (req: Request, res: Response) => {
+        try {
+            const id = req.params.id;
+            const file = req.files as Express.Multer.File[];
+            console.info(file);
+    
+            if (!file) {
+                res.status(400).json({ error: 'File thumbnail wajib diisi' });
+                return;
+            }
+    
+            const baseUrl = `${req.protocol}://${req.get('host')}`;
+            const thumbnailUrl = `${baseUrl}/${file[0].path.replace(/\\/g, '/')}`;
+    
+            const updated = await this.service.updateAmplifikasi(id, { thumbnail: thumbnailUrl });
+            res.json(updated);
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Failed to upload thumbnail' });
+        }
+    };    
+
     removeEvidence = async (req: Request, res: Response) => {
         try {
             const { id } = req.params;
@@ -93,5 +97,4 @@ export class AmplifikasiController {
             res.status(500).json({ error: 'Gagal menghapus evidence' });
         }
     };
-
 }

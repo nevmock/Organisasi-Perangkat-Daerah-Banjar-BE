@@ -6,9 +6,15 @@ const indikatorSchema = new mongoose.Schema({
     evidence: [{ type: String }],
     kendala: { type: String },
     kesimpulan_tindakan: { type: String },
+
     id_perencanaan: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Perencanaan',
+        required: true
+    },
+    id_amplifikasi: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Amplifikasi',
         required: true
     }
 }, { timestamps: true });

@@ -1,15 +1,16 @@
 import { PerencanaanRepository } from '../repositories/PerencanaanRepository';
 import { IndikatorModel } from '../models/IndikatorModel';
+import { AmplifikasiModel } from '../models/AmplifikasiModel';
 
 export class PerencanaanService {
     private repo = new PerencanaanRepository();
 
     async getAllPerencanaans() {
-        return this.repo.findAll(); // no populate
+        return this.repo.findAll(); // populated to indikator + amplifikasi
     }
 
     async getPerencanaan(id: string) {
-        return this.repo.findById(id); // no populate
+        return this.repo.findById(id); // populated
     }
 
     async createPerencanaanWithIndikators(data: {
@@ -20,14 +21,36 @@ export class PerencanaanService {
         indikator_labels?: string[]
     }) {
         const { indikator_labels = [], ...perencanaanData } = data;
-        const perencanaan = await this.repo.create(perencanaanData);
+        const perencanaan = await this.repo.create({ ...perencanaanData, id_indikator: [] });
+
+        const indikatorIds = [];
 
         for (const label of indikator_labels) {
-            await IndikatorModel.create({
+            const indikator = await IndikatorModel.create({
                 indikator_label: label,
-                id_perencanaan: perencanaan._id
+                id_perencanaan: perencanaan._id,
+                id_amplifikasi: null // sementara null, nanti di-update
             });
-        }
+        
+            const amplifikasi = await AmplifikasiModel.create({
+                platform: '',
+                caption: '',
+                type: '',
+                thumbnail: '',
+                evidence: [],
+                can_edit: false,
+                id_perencanaan: perencanaan._id,
+                id_indikator: indikator._id
+            });
+        
+            // Update indikator dengan id_amplifikasi setelah amplifikasi dibuat
+            await indikator.updateOne({ $set: { id_amplifikasi: amplifikasi._id } });
+        
+            indikatorIds.push(indikator._id);
+        }                
+
+        // Update perencanaan dengan id_indikator[]
+        await perencanaan.updateOne({ $set: { id_indikator: indikatorIds } });
 
         return this.repo.findById(perencanaan._id.toString());
     }

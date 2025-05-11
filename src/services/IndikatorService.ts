@@ -5,15 +5,15 @@ export class IndikatorService {
     private repo = new IndikatorRepository();
 
     async getAllIndikators() {
-        return this.repo.findAll(); // includes populate
+        return this.repo.findAll(); // includes amplifikasi
     }
 
     async getIndikator(id: string) {
         return this.repo.findById(id);
     }
 
-    async getByPerencanaan(perencanaanId: string) {
-        return this.repo.findByPerencanaan(perencanaanId);
+    async getByIds(ids: string[]) {
+        return this.repo.findByIds(ids);
     }
 
     async createIndikator(data: any) {
@@ -40,12 +40,9 @@ export class IndikatorService {
         const indikator = await this.repo.findById(indikatorId);
         if (!indikator) throw new Error('Indikator tidak ditemukan');
 
-        // Hapus dari file system
         deleteEvidenceFile(evidenceUrl);
 
-        // Update DB
         const updatedEvidence = (indikator.evidence || []).filter(e => e !== evidenceUrl);
         return this.repo.update(indikatorId, { evidence: updatedEvidence });
     }
-
 }

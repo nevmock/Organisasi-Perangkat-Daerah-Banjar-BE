@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 export const connectDB = async () => {
     try {
         await mongoose.connect(process.env.MONGO_URI || '', {
-            dbName: 'opd-jabar',
+            dbName: 'opd-banjar',
         });
         console.log('✅ MongoDB connected');
     } catch (err) {

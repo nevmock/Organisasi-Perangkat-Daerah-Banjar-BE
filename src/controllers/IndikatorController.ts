@@ -23,15 +23,6 @@ export class IndikatorController {
         }
     };
 
-    getByPerencanaan = async (req: Request, res: Response) => {
-        try {
-            const data = await this.service.getByPerencanaan(req.params.perencanaanId);
-            res.json(data);
-        } catch {
-            res.status(500).json({ error: 'Failed to fetch indikator by perencanaan' });
-        }
-    };
-
     create = async (req: Request, res: Response) => {
         try {
             const data = await this.service.createIndikator(req.body);
@@ -93,5 +84,4 @@ export class IndikatorController {
             res.status(500).json({ error: 'Gagal menghapus evidence' });
         }
     };
-
 }

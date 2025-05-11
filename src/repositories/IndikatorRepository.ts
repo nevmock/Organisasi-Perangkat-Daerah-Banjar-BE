@@ -4,17 +4,18 @@ export class IndikatorRepository {
     async findAll() {
         return IndikatorModel.find()
             .sort({ createdAt: -1 })
-            .populate('id_perencanaan');
+            .populate('id_amplifikasi');
     }
 
     async findById(id: string) {
         return IndikatorModel.findById(id)
-            .populate('id_perencanaan');
+            .populate('id_amplifikasi');
     }
 
-    async findByPerencanaan(perencanaanId: string) {
-        return IndikatorModel.find({ id_perencanaan: perencanaanId })
-            .sort({ createdAt: -1 });
+    async findByIds(ids: string[]) {
+        return IndikatorModel.find({ _id: { $in: ids } })
+            .sort({ createdAt: -1 })
+            .populate('id_amplifikasi');
     }
 
     async create(data: any) {

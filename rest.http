@@ -1,127 +1,164 @@
+### 🔷 PERENCANAAN
 
-### PERENCANAAN
-
-# Get All Perencanaan
-GET http://localhost:3000/api/perencanaan
-
-###
-
-# Get Perencanaan by ID
-GET http://localhost:3000/api/perencanaan/{{perencanaan_id}}
+# ✅ Get All Perencanaan
+GET http://localhost:5050/api/perencanaan
 
 ###
 
-# Create Perencanaan
-POST http://localhost:3000/api/perencanaan
+# ✅ Get Perencanaan by ID
+GET http://localhost:5050/api/perencanaan/{{perencanaan_id}}
+
+###
+
+# ✅ Create Perencanaan + indikator
+POST http://localhost:5050/api/perencanaan
 Content-Type: application/json
 
 {
-  "nama_program": "Program Irigasi",
-  "opd_pelaksana": "Dinas Pertanian",
+  "nama_program": "Program Uji Coba",
+  "opd_pelaksana": "Dinas Contoh",
   "tgl_mulai": "2025-07-01",
-  "target": "Selesai Q3",
-  "indikator_labels": [
-    "Survey awal",
-    "Koordinasi warga",
-    "Pembangunan saluran"
-  ]
+  "target": "Selesai",
+  "indikator_labels": ["Lorem Ipsum 1", "Lorem Ipsum 2", "Lorem Ipsum 3"]
 }
 
 ###
 
-# Update Perencanaan
-PUT http://localhost:3000/api/perencanaan/{{perencanaan_id}}
+# ✅ Update Perencanaan
+PUT http://localhost:5050/api/perencanaan/{{perencanaan_id}}
 Content-Type: application/json
 
 {
-  "target": "Selesai dalam 3 bulan"
+  "target": "Selesai akhir tahun"
 }
 
 ###
 
-# Delete Perencanaan
-DELETE http://localhost:3000/api/perencanaan/{{perencanaan_id}}
+# ✅ Delete Perencanaan
+DELETE http://localhost:5050/api/perencanaan/{{perencanaan_id}}
 
 ###
 
-### INDIKATOR
+### 🟩 INDIKATOR
 
-# Get All Indikator
-GET http://localhost:3000/api/indikator
-
-###
-
-# Get Indikator by ID
-GET http://localhost:3000/api/indikator/{{indikator_id}}
+# ✅ Get All Indikator
+GET http://localhost:5050/api/indikator
 
 ###
 
-# Create Indikator
-POST http://localhost:3000/api/indikator
+# ✅ Get Indikator by ID
+GET http://localhost:5050/api/indikator/68204cded96be3603a64cc42
+
+###
+
+# ✅ Create Indikator
+POST http://localhost:5050/api/indikator
 Content-Type: application/json
 
 {
-  "indikator_label": "Laporan akhir",
-  "id_perencanaan": "{{perencanaan_id}}"
+  "indikator_label": "Pengumpulan Data",
+  "id_amplifikasi": null
 }
 
 ###
 
-# Update Indikator
-PUT http://localhost:3000/api/indikator/{{indikator_id}}
+# ✅ Update Indikator
+PUT http://localhost:5050/api/indikator/{{indikator_id}}
 Content-Type: application/json
 
 {
   "sudah_selesai": true,
-  "kendala": "Hujan deras",
-  "kesimpulan_tindakan": "Perlu dijadwal ulang",
+  "kendala": "Cuaca buruk",
+  "kesimpulan_tindakan": "Jadwal ulang",
   "evidence": [
-    "http://localhost:3000/public/evidence/indikator/peren_id/indikator_id/evidence-1715.jpg"
+    "http://localhost:5050/public/evidence/indikator/xyz/evidence-1715.jpg"
   ]
 }
 
 ###
 
-# Delete Indikator
-DELETE http://localhost:3000/api/indikator/{{indikator_id}}
+# ✅ Delete Indikator
+DELETE http://localhost:5050/api/indikator/{{indikator_id}}
 
 ###
 
-# Upload Evidence Indikator
-POST http://localhost:3000/api/indikator/{{indikator_id}}/upload-evidence
+# ✅ Upload Evidence Indikator
+POST http://localhost:5050/api/indikator/{{indikator_id}}/upload-evidence
 Content-Type: multipart/form-data
 
-# Form-data:
-#   - evidence: (File)
-#   - id_perencanaan: {{perencanaan_id}}
+# form-data:
+# - evidence: (File)
+# - id_perencanaan: {{perencanaan_id}}
 
 ###
 
-# Delete Evidence Indikator
-DELETE http://localhost:3000/api/indikator/{{indikator_id}}/remove-evidence
+# ✅ Delete Evidence Indikator
+DELETE http://localhost:5050/api/indikator/{{indikator_id}}/remove-evidence
 Content-Type: application/json
 
 {
-  "url": "http://localhost:3000/public/evidence/indikator/peren_id/indikator_id/evidence-1715.jpg"
+  "url": "http://localhost:5050/public/evidence/indikator/xyz/evidence-1715.jpg"
 }
 
 ###
 
-### AMPLIFIKASI
+### 🟦 AMPLIFIKASI
 
-# Upload Evidence Amplifikasi
-POST http://localhost:3000/api/amplifikasi/{{amplifikasi_id}}/upload-evidence
-Content-Type: multipart/form-data
-
-# Form-data:
-#   - evidence: (File)
+# ✅ Get All Amplifikasi
+GET http://localhost:5050/api/amplifikasi
 
 ###
 
-# Delete Evidence Amplifikasi
-DELETE http://localhost:3000/api/amplifikasi/{{amplifikasi_id}}/remove-evidence
+# ✅ Get Amplifikasi by ID
+GET http://localhost:5050/api/amplifikasi/{{amplifikasi_id}}
+
+###
+
+# ✅ Create Amplifikasi
+POST http://localhost:5050/api/amplifikasi
 Content-Type: application/json
 
 {
-  "url": "http://localhost:3000/public/evidence/amplifikasi/amplifikasi_id/evidence-1715.jpg"
+  "id_perencanaan": "{{perencanaan_id}}",
+  "id_indikator": "{{indikator_id}}",
+  "platform": "Instagram",
+  "caption": "Caption Uji Coba",
+  "type": "image",
+  "thumbnail": "",
+  "evidence": []
+}
+
+###
+
+# ✅ Update Amplifikasi
+PUT http://localhost:5050/api/amplifikasi/{{amplifikasi_id}}
+Content-Type: application/json
+
+{
+  "caption": "Caption diperbarui",
+  "platform": "Tiktok"
+}
+
+###
+
+# ✅ Delete Amplifikasi
+DELETE http://localhost:5050/api/amplifikasi/{{amplifikasi_id}}
+
+###
+
+# ✅ Upload Evidence Amplifikasi
+POST http://localhost:5050/api/amplifikasi/{{amplifikasi_id}}/upload-evidence
+Content-Type: multipart/form-data
+
+# form-data:
+# - evidence: (File)
+
+###
+
+# ✅ Delete Evidence Amplifikasi
+DELETE http://localhost:5050/api/amplifikasi/{{amplifikasi_id}}/remove-evidence
+Content-Type: application/json
+
+{
+  "url": "http://localhost:5050/public/evidence/amplifikasi/xyz/evidence-1715.jpg"
 }

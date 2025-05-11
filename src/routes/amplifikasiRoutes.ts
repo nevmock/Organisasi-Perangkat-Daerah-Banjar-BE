@@ -5,11 +5,9 @@ import { uploadAmplifikasiEvidence } from '../middlewares/upload';
 const router = express.Router();
 const controller = new AmplifikasiController();
 
-router.get('/perencanaan/:perencanaanId', controller.getByPerencanaan);
 router.get('/', controller.getAll);
 router.get('/:id', controller.getById);
 
-router.post('/', controller.create);
 router.put('/:id', controller.update);
 
 router.delete('/:id/remove-evidence', async (req, res) => {
@@ -23,5 +21,12 @@ router.post(
     uploadAmplifikasiEvidence.array('evidence', 10),
     controller.uploadEvidence
 );
+
+router.post(
+    '/:id/upload-thumbnail',
+    uploadAmplifikasiEvidence.single('thumbnail'),
+    controller.uploadThumbnail
+);
+
 
 export default router;

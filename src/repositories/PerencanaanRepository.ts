@@ -3,11 +3,23 @@ import { PerencanaanModel } from '../models/PerencanaanModel';
 export class PerencanaanRepository {
     async findAll() {
         return PerencanaanModel.find()
-            .sort({ createdAt: -1 });
+            .sort({ createdAt: -1 })
+            .populate({
+                path: 'id_indikator',
+                populate: {
+                    path: 'id_amplifikasi'
+                }
+            });
     }
 
     async findById(id: string) {
-        return PerencanaanModel.findById(id);
+        return PerencanaanModel.findById(id)
+            .populate({
+                path: 'id_indikator',
+                populate: {
+                    path: 'id_amplifikasi'
+                }
+            });
     }
 
     async create(data: any) {
