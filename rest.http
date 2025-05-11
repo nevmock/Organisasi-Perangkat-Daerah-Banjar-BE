@@ -55,7 +55,7 @@ GET http://localhost:5050/api/indikator/68204cded96be3603a64cc42
 
 ✅ Update Indikator
 ###
-PUT http://localhost:5050/api/indikator/68206c2c2925ea03e3eebad8
+PUT http://localhost:5050/api/indikator/68206c432925ea03e3eebae8
 Content-Type: application/json
 
 {

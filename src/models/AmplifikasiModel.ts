@@ -6,7 +6,7 @@ const amplifikasiSchema = new mongoose.Schema({
     evidence: [{ type: String }],
     caption: { type: String},
     type: { type: String},
-    can_edit: { type: Boolean, default: false },
+    sudah_dipost: { type: Boolean, default: false },
     
     id_indikator: {
         type: mongoose.Schema.Types.ObjectId,

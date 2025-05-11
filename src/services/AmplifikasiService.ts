@@ -15,6 +15,7 @@ export class AmplifikasiService {
     }
 
     async updateAmplifikasi(id: string, data: any) {
+
         const amplifikasi = await this.repo.findById(id);
         if (!amplifikasi) throw new Error('Amplifikasi tidak ditemukan');
     
@@ -32,10 +33,9 @@ export class AmplifikasiService {
         if (unfinished.length > 0) {
             throw new Error('Amplifikasi belum bisa diubah karena indikator belum selesai semua');
         }
-    
-        // Ubah amplifikasi
-        return await this.repo.update(id, { ...data, can_edit: true });
-    }    
+
+        return
+    }
 
     async deleteAmplifikasi(id: string) {
         return this.repo.delete(id);
