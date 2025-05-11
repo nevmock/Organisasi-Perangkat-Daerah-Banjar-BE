@@ -6,8 +6,31 @@ export class PerencanaanService {
     private repo = new PerencanaanRepository();
 
     async getAllPerencanaans() {
-        return this.repo.findAll(); // populated to indikator + amplifikasi
+        return this.repo.findAll();
     }
+
+    async getAllPerencanaanByAmplifikasi() {
+        const allPerencanaan = await this.repo.findAllWithPopulate();
+    
+        const results = [];
+    
+        for (const perencanaan of allPerencanaan) {
+            const indikatorList = perencanaan.id_indikator || [];
+    
+            // Ambil semua indikator dari DB (jika id_indikator belum populated)
+            const indikatorDocs = await IndikatorModel.find({
+                _id: { $in: indikatorList }
+            });
+    
+            const allSelesai = indikatorDocs.length > 0 && indikatorDocs.every(i => i.sudah_selesai === true);
+    
+            if (allSelesai) {
+                results.push(perencanaan);
+            }
+        }
+    
+        return results;
+    }    
 
     async getPerencanaan(id: string) {
         return this.repo.findById(id); // populated

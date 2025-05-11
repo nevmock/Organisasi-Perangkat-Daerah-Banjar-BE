@@ -1,7 +1,10 @@
 ### 🔷 PERENCANAAN
 
-# ✅ Get All Perencanaan
+### ✅ Get All Perencanaan
 GET http://localhost:5050/api/perencanaan
+
+### ✅ Get All Perencanaan
+GET http://localhost:5050/api/perencanaan/amplifikasi
 
 ###
 
@@ -15,11 +18,11 @@ POST http://localhost:5050/api/perencanaan
 Content-Type: application/json
 
 {
-  "nama_program": "Program Uji Coba",
-  "opd_pelaksana": "Dinas Contoh",
+  "nama_program": "Program Uji Coba 3",
+  "opd_pelaksana": "Dinas Contoh 3",
   "tgl_mulai": "2025-07-01",
   "target": "Selesai",
-  "indikator_labels": ["Lorem Ipsum 1", "Lorem Ipsum 2", "Lorem Ipsum 3"]
+  "indikator_labels": ["Lorem Ipsum 1", "Lorem Ipsum 2", "Lorem Ipsum 3", "Lorem Ipsum 4"]
 }
 
 ###
@@ -49,30 +52,28 @@ GET http://localhost:5050/api/indikator
 # ✅ Get Indikator by ID
 GET http://localhost:5050/api/indikator/68204cded96be3603a64cc42
 
+
+✅ Update Indikator
 ###
-
-# ✅ Create Indikator
-POST http://localhost:5050/api/indikator
-Content-Type: application/json
-
-{
-  "indikator_label": "Pengumpulan Data",
-  "id_amplifikasi": null
-}
-
-###
-
-# ✅ Update Indikator
-PUT http://localhost:5050/api/indikator/{{indikator_id}}
+PUT http://localhost:5050/api/indikator/68206c2c2925ea03e3eebad8
 Content-Type: application/json
 
 {
   "sudah_selesai": true,
   "kendala": "Cuaca buruk",
   "kesimpulan_tindakan": "Jadwal ulang",
-  "evidence": [
-    "http://localhost:5050/public/evidence/indikator/xyz/evidence-1715.jpg"
-  ]
+  "evidence": []
+}
+
+###
+PUT http://localhost:5050/api/indikator/68206c2c2925ea03e3eebadd
+Content-Type: application/json
+
+{
+  "sudah_selesai": true,
+  "kendala": "Cuaca buruk",
+  "kesimpulan_tindakan": "Jadwal ulang",
+  "evidence": []
 }
 
 ###

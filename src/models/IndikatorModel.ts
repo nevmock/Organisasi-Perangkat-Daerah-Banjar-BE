@@ -14,8 +14,7 @@ const indikatorSchema = new mongoose.Schema({
     },
     id_amplifikasi: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Amplifikasi',
-        required: true
+        ref: 'Amplifikasi'
     }
 }, { timestamps: true });
 

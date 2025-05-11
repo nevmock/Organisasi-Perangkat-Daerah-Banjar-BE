@@ -13,6 +13,15 @@ export class PerencanaanController {
         }
     };
 
+    getAllByAmplifikasi = async (_req: Request, res: Response) => {
+        try {
+            const data = await this.service.getAllPerencanaanByAmplifikasi();
+            res.json(data);
+        } catch {
+            res.status(500).json({ error: 'Failed to fetch perencanaans' });
+        }
+    };
+
     getById = async (req: Request, res: Response) => {
         try {
             const data = await this.service.getPerencanaan(req.params.id);

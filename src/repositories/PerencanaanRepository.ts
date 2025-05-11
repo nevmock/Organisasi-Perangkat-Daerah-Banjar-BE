@@ -12,6 +12,17 @@ export class PerencanaanRepository {
             });
     }
 
+    async findAllWithPopulate() {
+        return PerencanaanModel.find()
+            .sort({ createdAt: -1 })
+            .populate({
+                path: 'id_indikator',
+                populate: {
+                    path: 'id_amplifikasi'
+                }
+            });
+    }    
+
     async findById(id: string) {
         return PerencanaanModel.findById(id)
             .populate({
