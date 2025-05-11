@@ -132,12 +132,14 @@ Content-Type: application/json
 ###
 
 # ✅ Update Amplifikasi
-PUT http://localhost:5050/api/amplifikasi/{{amplifikasi_id}}
+PUT http://localhost:5050/api/amplifikasi/68206c2c2925ea03e3eebada
 Content-Type: application/json
 
 {
   "caption": "Caption diperbarui",
-  "platform": "Tiktok"
+  "platform": "Tiktok",
+  "type": "video",
+  "sudah_dipost": true
 }
 
 ###

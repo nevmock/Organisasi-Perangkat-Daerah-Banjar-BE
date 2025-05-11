@@ -30,7 +30,7 @@ export class AmplifikasiController {
         } catch {
             res.status(500).json({ error: 'Failed to update Amplifikasi' });
         }
-    };
+    };    
 
     delete = async (req: Request, res: Response) => {
         try {
