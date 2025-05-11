@@ -65,18 +65,17 @@ export class AmplifikasiController {
     uploadThumbnail = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            const file = req.files as Express.Multer.File[];
-            console.info(file);
+            const files = req.files as Express.Multer.File[];
     
-            if (!file) {
+            if (!files || files.length === 0) {
                 res.status(400).json({ error: 'File thumbnail wajib diisi' });
                 return;
             }
     
             const baseUrl = `${req.protocol}://${req.get('host')}`;
-            const thumbnailUrl = `${baseUrl}/${file[0].path.replace(/\\/g, '/')}`;
+            const urls = buildEvidenceUrls(files, baseUrl);
     
-            const updated = await this.service.updateAmplifikasi(id, { thumbnail: thumbnailUrl });
+            const updated = await this.service.addThumbnail(id, urls);
             res.json(updated);
         } catch (err) {
             console.error(err);

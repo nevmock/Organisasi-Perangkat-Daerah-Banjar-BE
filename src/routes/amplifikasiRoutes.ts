@@ -1,6 +1,6 @@
 import express from 'express';
 import { AmplifikasiController } from '../controllers/AmplifikasiController';
-import { uploadAmplifikasiEvidence } from '../middlewares/upload';
+import { uploadAmplifikasiEvidence, uploadAmplifikasiThumbnail } from '../middlewares/upload';
 
 const router = express.Router();
 const controller = new AmplifikasiController();
@@ -24,7 +24,7 @@ router.post(
 
 router.post(
     '/:id/upload-thumbnail',
-    uploadAmplifikasiEvidence.single('thumbnail'),
+    uploadAmplifikasiThumbnail.array('thumbnail', 1),
     controller.uploadThumbnail
 );
 

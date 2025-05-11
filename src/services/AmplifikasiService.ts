@@ -25,12 +25,20 @@ export class AmplifikasiService {
         return this.repo.delete(id);
     }
 
-    async addEvidence(id: string, newFiles: string[]) {
+    async addEvidence(id: string, newUrls: string[]) {
         const amplifikasi = await this.repo.findById(id);
         if (!amplifikasi) throw new Error('Amplifikasi tidak ditemukan');
 
-        const updatedEvidence = [...(amplifikasi.evidence || []), ...newFiles];
+        const updatedEvidence = [...(amplifikasi.evidence || []), ...newUrls];
         return this.repo.update(id, { evidence: updatedEvidence });
+    }
+
+    async addThumbnail(id: string, newUrls: string[]) {
+        const amplifikasi = await this.repo.findById(id);
+        if (!amplifikasi) throw new Error('Amplifikasi tidak ditemukan');
+
+        const updatedThumbnail = [...(amplifikasi.thumbnail || []), ...newUrls];
+        return this.repo.update(id, { thumbnail: updatedThumbnail });
     }
 
     async removeEvidence(amplifikasiId: string, evidenceUrl: string) {

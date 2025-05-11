@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const amplifikasiSchema = new mongoose.Schema({
     platform: { type: String},
-    thumbnail: { type: String },
+    thumbnail: [{ type: String }],
     evidence: [{ type: String }],
     caption: { type: String},
     type: { type: String},
