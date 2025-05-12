@@ -21,7 +21,7 @@ export class IndikatorService {
     }
 
     async updateIndikator(id: string, data: any) {
-        return this.repo.update(id, data);
+        return this.repo.updateIndikator(id, data);
     }
 
     async deleteIndikator(id: string) {

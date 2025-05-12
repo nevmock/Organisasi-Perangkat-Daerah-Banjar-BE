@@ -39,7 +39,7 @@ export class PerencanaanRepository {
 
     async update(id: string, data: any) {
         return PerencanaanModel.findByIdAndUpdate(id, data, { new: true });
-    }
+    }  
 
     async delete(id: string) {
         return PerencanaanModel.findByIdAndDelete(id);

@@ -80,7 +80,7 @@ export class PerencanaanService {
 
     async updatePerencanaan(id: string, data: any) {
         return this.repo.update(id, data);
-    }
+    }   
 
     async deletePerencanaan(id: string) {
         return this.repo.delete(id);

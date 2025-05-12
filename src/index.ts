@@ -5,7 +5,8 @@ import { connectDB } from './config/mongoose';
 
 import perencanaanRoutes from './routes/perencanaanRoutes';
 import indikatorRoutes from './routes/indikatorRoutes';
-import amplifikasiRoutes from './routes/amplifikasiRoutes'; // ✅ Import ini
+import amplifikasiRoutes from './routes/amplifikasiRoutes';
+import monitoringRoutes from './routes/monitoringRoutes';
 
 dotenv.config();
 const app = express();
@@ -23,7 +24,8 @@ app.use('/public', express.static('public'));
 
 app.use('/api/perencanaan', perencanaanRoutes);
 app.use('/api/indikator', indikatorRoutes);
-app.use('/api/amplifikasi', amplifikasiRoutes); // ✅ Register di sini
+app.use('/api/amplifikasi', amplifikasiRoutes);
+app.use('/api/monitoring', monitoringRoutes);
 
 app.get('/', (_, res) => {
     res.send('API siap jalan 🛠️');

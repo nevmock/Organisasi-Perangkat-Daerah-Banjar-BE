@@ -9,7 +9,7 @@ GET http://localhost:5050/api/perencanaan/amplifikasi
 ###
 
 # ✅ Get Perencanaan by ID
-GET http://localhost:5050/api/perencanaan/{{perencanaan_id}}
+GET http://localhost:5050/api/perencanaan/getById/682055b1511a441b7f2db986
 
 ###
 
@@ -18,11 +18,11 @@ POST http://localhost:5050/api/perencanaan
 Content-Type: application/json
 
 {
-  "nama_program": "Program Uji Coba 3",
-  "opd_pelaksana": "Dinas Contoh 3",
-  "tgl_mulai": "2025-07-01",
+  "nama_program": "Program Uji Coba Cintaku Padamu 4",
+  "opd_pelaksana": "Dinas Bengkel Cinta 4",
+  "tgl_mulai": "2025-02-01",
   "target": "Selesai",
-  "indikator_labels": ["Lorem Ipsum 1", "Lorem Ipsum 2", "Lorem Ipsum 3", "Lorem Ipsum 4"]
+  "indikator_labels": ["Bengkel Cinta 1", "Bengkel Cinta 2"]
 }
 
 ###
@@ -50,29 +50,32 @@ GET http://localhost:5050/api/indikator
 ###
 
 # ✅ Get Indikator by ID
-GET http://localhost:5050/api/indikator/68204cded96be3603a64cc42
+GET http://localhost:5050/api/indikator/68216c6db1373d8802819942
+
+### Get Indikator by Perencanaan ID
+GET http://localhost:5050/api/perencanaan/indikator/68216c6db1373d8802819942
 
 
 ✅ Update Indikator
 ###
-PUT http://localhost:5050/api/indikator/68206c432925ea03e3eebae8
+PUT http://localhost:5050/api/indikator/68217e8f17462cc4c910ee45
 Content-Type: application/json
 
 {
   "sudah_selesai": true,
-  "kendala": "Cuaca buruk",
-  "kesimpulan_tindakan": "Jadwal ulang",
+  "kendala": "Cinta 1 Aman",
+  "kesimpulan_tindakan": "Jadwal ulang cinta 1",
   "evidence": []
 }
 
 ###
-PUT http://localhost:5050/api/indikator/68206c2c2925ea03e3eebadd
+PUT http://localhost:5050/api/indikator/68217e5f17462cc4c910ee30
 Content-Type: application/json
 
 {
   "sudah_selesai": true,
-  "kendala": "Cuaca buruk",
-  "kesimpulan_tindakan": "Jadwal ulang",
+  "kendala": "Cinta 2 Aman",
+  "kesimpulan_tindakan": "Jadwal ulang cinta 2",
   "evidence": []
 }
 
@@ -165,3 +168,9 @@ Content-Type: application/json
 {
   "url": "http://localhost:5050/public/evidence/amplifikasi/xyz/evidence-1715.jpg"
 }
+
+### Monitoring Waktu Penyelesaian
+GET http://localhost:5050/api/monitoring/
+
+### Monitoring Presentasi Indikator
+GET http://localhost:5050/api/monitoring/summary
