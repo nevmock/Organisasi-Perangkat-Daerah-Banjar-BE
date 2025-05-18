@@ -5,6 +5,7 @@ const router = express.Router();
 const controller = new MonitoringController();
 
 router.get('/summary', controller.getIndikatorSummary);
+router.get('/performance', controller.getDailyPerformance);
 router.get('/:id', controller.getMonitoring);
 router.get('/', controller.getAllMonitoring);
 

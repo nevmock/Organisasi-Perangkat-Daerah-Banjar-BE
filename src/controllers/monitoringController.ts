@@ -32,4 +32,12 @@ export class MonitoringController {
         }
     }
     
+    getDailyPerformance = async (req: Request, res: Response) => {
+        try {
+            const result = await this.service.getDailyPerformance();
+            res.json(result);
+        } catch (error: any) {
+            res.status(500).json({ message: error.message });
+        }
+    }
 }

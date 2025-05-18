@@ -170,7 +170,10 @@ Content-Type: application/json
 }
 
 ### Monitoring Waktu Penyelesaian
-GET http://localhost:5050/api/monitoring/
+GET http://sia-api.nevmock.id/api/monitoring/
 
 ### Monitoring Presentasi Indikator
-GET http://localhost:5050/api/monitoring/summary
+GET http://sia-api.nevmock.id/api/monitoring/summary
+
+### Monitoring Presentasi Indikator
+GET http://localhost:5050/api/monitoring/performance

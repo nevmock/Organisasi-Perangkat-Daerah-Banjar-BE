@@ -1,4 +1,5 @@
 import { PerencanaanRepository } from '../repositories/PerencanaanRepository';
+import { IndikatorModel } from '../models/IndikatorModel';
 
 export class MonitoringService {
     private perencanaanRepo = new PerencanaanRepository();
@@ -52,15 +53,15 @@ export class MonitoringService {
         const all = await this.perencanaanRepo.findAll(); // sudah populate id_indikator
         let total = 0;
         let selesai = 0;
-    
+
         for (const p of all) {
             const indikator = p.id_indikator;
             total += indikator.length;
             selesai += indikator.filter((i: any) => i.sudah_selesai).length;
         }
-    
+
         const persenSelesai = total > 0 ? Math.round((selesai / total) * 100) : 0;
-    
+
         return {
             total_indikator: total,
             indikator_selesai: selesai,
@@ -68,5 +69,45 @@ export class MonitoringService {
             persen_selesai: persenSelesai
         };
     }
-    
+
+    async getDailyPerformance() {
+        // Ambil semua indikator + perencanaan untuk akses end_date
+        const allIndikator = await IndikatorModel.find()
+            .select('sudah_selesai createdAt updatedAt id_perencanaan')
+            .populate('id_perencanaan', 'end_date');
+
+        const dailyData: Record<string, { completed: number, inProgress: number, behind: number }> = {};
+
+        for (const indikator of allIndikator) {
+            const updatedDate = new Date(indikator.updatedAt);
+            const dateKey = updatedDate.toISOString().split('T')[0];
+
+            if (!dailyData[dateKey]) {
+                dailyData[dateKey] = { completed: 0, inProgress: 0, behind: 0 };
+            }
+
+            // Hitung completed & in-progress
+            if (indikator.sudah_selesai) {
+                dailyData[dateKey].completed += 1;
+            } else {
+                dailyData[dateKey].inProgress += 1;
+            }
+
+            // Hitung behind jika belum selesai dan sudah melewati end_date
+            const perencanaan: any = indikator.id_perencanaan as any;
+            const endDate = perencanaan?.end_date;
+            if (!indikator.sudah_selesai && endDate && updatedDate > new Date(endDate)) {
+                dailyData[dateKey].behind += 1;
+            }
+        }
+
+        // Format ke array untuk grafik
+        const formatted = Object.entries(dailyData).map(([date, stats]) => ({
+            date,
+            ...stats
+        }));
+
+        return formatted;
+    }
+
 }
