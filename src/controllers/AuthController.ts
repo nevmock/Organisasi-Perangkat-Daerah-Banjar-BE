@@ -11,8 +11,8 @@ class AuthController {
     public async registerUser(req: Request, res: Response): Promise<Response> {
         try {
             const { email, password, unit, role } = req.body;
-            const user = this.authService.register(email, password, unit, role);
-            return res.status(201).json(user);
+            const user = await this.authService.register(email, password, unit, role);
+            return res.status(201).json({ message: 'Register berhasil', user });
         } catch (error) {
             const message = error instanceof Error ? error.message : 'An error occurred';
             return res.status(400).json({ message });
@@ -22,7 +22,7 @@ class AuthController {
     public async loginUser(req: Request, res: Response): Promise<Response> {
         try {
             const { email, password } = req.body;
-            const token = this.authService.login(email, password);
+            const token = await this.authService.login(email, password);
             return res.status(200).json({ token });
         } catch (error) {
             const message = error instanceof Error ? error.message : 'An error occurred';

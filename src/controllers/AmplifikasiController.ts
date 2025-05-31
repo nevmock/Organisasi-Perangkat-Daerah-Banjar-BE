@@ -96,4 +96,14 @@ export class AmplifikasiController {
             res.status(500).json({ error: 'Gagal menghapus evidence' });
         }
     };
+
+    search = async (req: Request, res: Response) => {
+        try {
+            const q = (req.query.q as string) || '';
+            const data = await this.service.searchAmplifikasi(q);
+            res.json(data);
+        } catch {
+            res.status(500).json({ error: 'Failed to search Amplifikasi' });
+        }
+    };
 }

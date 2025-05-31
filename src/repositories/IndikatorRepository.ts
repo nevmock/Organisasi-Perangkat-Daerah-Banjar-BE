@@ -51,4 +51,16 @@ export class IndikatorRepository {
     async delete(id: string) {
         return IndikatorModel.findByIdAndDelete(id);
     }
+
+    async search(query: string) {
+        // Contoh: cari di field indikator_label dan kendala (case-insensitive)
+        return IndikatorModel.find({
+            $or: [
+                { indikator_label: { $regex: query, $options: 'i' } },
+                { kendala: { $regex: query, $options: 'i' } }
+            ]
+        })
+        .sort({ createdAt: -1 })
+        .populate('id_amplifikasi');
+    }
 }

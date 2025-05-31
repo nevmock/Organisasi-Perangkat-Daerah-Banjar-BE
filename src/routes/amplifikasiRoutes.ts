@@ -6,8 +6,9 @@ const router = express.Router();
 const controller = new AmplifikasiController();
 
 router.get('/', controller.getAll);
-router.get('/:id', controller.getById);
+router.get('/search', controller.search);
 
+router.get('/:id', controller.getById);
 router.put('/:id', controller.update);
 
 router.delete('/:id/remove-evidence', async (req, res) => {

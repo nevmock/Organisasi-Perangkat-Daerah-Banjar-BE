@@ -45,4 +45,8 @@ export class IndikatorService {
         const updatedEvidence = (indikator.evidence || []).filter(e => e !== evidenceUrl);
         return this.repo.update(indikatorId, { evidence: updatedEvidence });
     }
+
+    async searchIndikator(query: string) {
+        return this.repo.search(query);
+    }
 }

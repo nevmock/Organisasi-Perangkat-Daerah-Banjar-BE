@@ -50,4 +50,8 @@ export class AmplifikasiService {
         const updatedEvidence = (amplifikasi.evidence || []).filter(e => e !== evidenceUrl);
         return this.repo.update(amplifikasiId, { evidence: updatedEvidence });
     }
+
+    async searchAmplifikasi(query: string) {
+        return this.repo.search(query);
+    }
 }

@@ -58,4 +58,14 @@ export class PerencanaanController {
             res.status(500).json({ error: 'Failed to delete perencanaan' });
         }
     };
+
+    search = async (req: Request, res: Response) => {
+        try {
+            const q = (req.query.q as string) || '';
+            const data = await this.service.searchPerencanaan(q);
+            res.json(data);
+        } catch {
+            res.status(500).json({ error: 'Failed to search perencanaan' });
+        }
+    };
 }

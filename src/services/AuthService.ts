@@ -1,27 +1,32 @@
 import { sign } from 'jsonwebtoken';
 import { AuthModel } from '../models/AuthModel';
+import bcrypt from 'bcrypt';
 
 export class AuthService {
-    private users: AuthModel[] = [];
+    public async register(email: string, password: string, unit: string, role: string) {
+        const existing = await AuthModel.findOne({ email });
+        if (existing) throw new Error('Email sudah terdaftar');
 
-    public register(email: string, password: string, unit: string, role: string): AuthModel {
-        const newUser = new AuthModel(email, password, unit, role);
-        this.users.push(newUser);
-        return newUser;
+        // Hash password sebelum simpan
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = await AuthModel.create({ email, password: hashedPassword, unit, role });
+        return { email: user.email, unit: user.unit, role: user.role, id: user._id };
     }
 
-    public login(email: string, password: string): string | null {
-        const user = this.users.find(user => user.email === email && user.password === password);
-        if (user) {
-            return this.generateToken(user);
-        }
-        return null;
+    public async login(email: string, password: string): Promise<string> {
+        const user = await AuthModel.findOne({ email });
+        if (!user) throw new Error('Email atau password salah');
+
+        // Bandingkan password dengan hash
+        const valid = await bcrypt.compare(password, user.password);
+        if (!valid) throw new Error('Email atau password salah');
+
+        return this.generateToken(user);
     }
 
-    private generateToken(user: AuthModel): string {
-        const payload = { email: user.email, role: user.role };
+    private generateToken(user: any): string {
+        const payload = { email: user.email, role: user.role, id: user._id };
         const secret = process.env.JWT_SECRET || 'your_jwt_secret';
-        const token = sign(payload, secret, { expiresIn: '1h' });
-        return token;
+        return sign(payload, secret, { expiresIn: '1h' });
     }
 }

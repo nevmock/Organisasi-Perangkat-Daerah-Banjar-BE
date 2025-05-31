@@ -1,26 +1,10 @@
-// This file defines the AuthModel class for authentication purposes.
+import mongoose from 'mongoose';
 
-export class AuthModel {
-    email: string;
-    password: string;
-    unit: string;
-    role: string;
+const authSchema = new mongoose.Schema({
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    unit: { type: String, required: true },
+    role: { type: String, required: true }
+}, { timestamps: true });
 
-    constructor(email: string, password: string, unit: string, role: string) {
-        this.email = email;
-        this.password = password;
-        this.unit = unit;
-        this.role = role;
-    }
-
-    // Method to validate email format
-    validateEmail(): boolean {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(this.email);
-    }
-
-    // Method to validate password strength
-    validatePassword(): boolean {
-        return this.password.length >= 6; // Example: minimum length of 6
-    }
-}
+export const AuthModel = mongoose.model('User', authSchema);

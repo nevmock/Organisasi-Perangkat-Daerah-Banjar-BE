@@ -85,4 +85,8 @@ export class PerencanaanService {
     async deletePerencanaan(id: string) {
         return this.repo.delete(id);
     }
+
+    async searchPerencanaan(query: string) {
+        return this.repo.search(query);
+    }
 }

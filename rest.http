@@ -198,3 +198,19 @@ Content-Type: application/json
   "email": "user@example.com",
   "password": "password123"
 }
+
+### Coba akses endpoint dengan token (ganti <TOKEN> dengan hasil login)
+GET http://localhost:5050/api/perencanaan
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJyb2xlIjoiYWRtaW4iLCJpZCI6IjY4M2I0Zjk0NTMwYjNhYTg1ZDZmMTAyNSIsImlhdCI6MTc0ODcxNzQ2NywiZXhwIjoxNzQ4NzIxMDY3fQ.PreUng-qGyWoh7jF2117gGN4R_Thprdx3aV5D2j_7to
+
+### 🔍 Search Amplifikasi
+GET http://localhost:5050/api/amplifikasi/search?q=instagram
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJyb2xlIjoiYWRtaW4iLCJpZCI6IjY4M2I0Zjk0NTMwYjNhYTg1ZDZmMTAyNSIsImlhdCI6MTc0ODcxNzQ2NywiZXhwIjoxNzQ4NzIxMDY3fQ.PreUng-qGyWoh7jF2117gGN4R_Thprdx3aV5D2j_7to
+
+### 🔍 Search Indikator
+GET http://localhost:5050/api/indikator/search?q=label
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJyb2xlIjoiYWRtaW4iLCJpZCI6IjY4M2I0Zjk0NTMwYjNhYTg1ZDZmMTAyNSIsImlhdCI6MTc0ODcxNzQ2NywiZXhwIjoxNzQ4NzIxMDY3fQ.PreUng-qGyWoh7jF2117gGN4R_Thprdx3aV5D2j_7to
+
+### 🔍 Search Perencanaan
+GET http://localhost:5050/api/perencanaan/search?q=cinta
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJyb2xlIjoiYWRtaW4iLCJpZCI6IjY4M2I0Zjk0NTMwYjNhYTg1ZDZmMTAyNSIsImlhdCI6MTc0ODcxNzQ2NywiZXhwIjoxNzQ4NzIxMDY3fQ.PreUng-qGyWoh7jF2117gGN4R_Thprdx3aV5D2j_7to

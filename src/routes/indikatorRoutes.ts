@@ -6,6 +6,9 @@ const router = express.Router();
 const controller = new IndikatorController();
 
 router.get('/', controller.getAll);
+
+router.get('/search', controller.search);
+
 router.get('/:id', controller.getById);
 
 // router.post('/', controller.create);
