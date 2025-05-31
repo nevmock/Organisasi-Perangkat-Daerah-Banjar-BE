@@ -177,3 +177,24 @@ GET http://sia-api.nevmock.id/api/monitoring/summary
 
 ### Monitoring Presentasi Indikator
 GET http://localhost:5050/api/monitoring/performance
+
+
+### Register User
+POST http://localhost:5050/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "password123",
+  "unit": "IT",
+  "role": "admin"
+}
+
+### Login User
+POST http://localhost:5050/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
