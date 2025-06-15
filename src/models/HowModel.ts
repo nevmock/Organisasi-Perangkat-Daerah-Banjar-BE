@@ -19,10 +19,10 @@ const howSchema = new mongoose.Schema({
         kota: { type: String, required: true }
     },
     rencana_anggaran: {
-        jumlah: { type: Number, required: true },
+        jumlah: { type: Number },
         sumber_dana: [{
-            jenis: { type: String, required: true },
-            persentase: { type: Number, required: true }
+            jenis: { type: String },
+            persentase: { type: Number }
         }]
     },
     opd_pengusul_utama: { type: String, required: true },
