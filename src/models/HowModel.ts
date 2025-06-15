@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 
 const howSchema = new mongoose.Schema({
-    id: { type: String, required: true, unique: true },
     nama_program: { type: String, required: true },
     tujuan_program: { type: String, required: true },
     sasaran_program: { type: String, required: true },

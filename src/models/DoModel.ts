@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 
 const doSchema = new mongoose.Schema({
-    id: { type: String, required: true, unique: true },
     nama_program: { type: String, required: true },
 
     kolaborator: [{

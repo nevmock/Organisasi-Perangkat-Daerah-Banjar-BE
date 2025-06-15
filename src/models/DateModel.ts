@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 
 const dateSchema = new mongoose.Schema({
-    id: { type: String, required: true, unique: true },
     nama_program: { type: String, required: true },
     tanggal_mulai: { type: Date, required: true },
     tanggal_selesai: { type: Date, required: true },
