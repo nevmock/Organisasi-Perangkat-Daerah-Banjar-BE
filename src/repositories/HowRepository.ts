@@ -17,8 +17,9 @@ export class HowRepository {
     }
 
     async create(data: any) {
-        const how = new HowModel(data);
-        return how.save();
+        // const how = new HowModel(data);
+        // return how.save();
+        return HowModel.create(data)
     }
 
     async update(id: string, data: any) {
