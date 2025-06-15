@@ -10,6 +10,9 @@ import indikatorRoutes from './routes/indikatorRoutes';
 import amplifikasiRoutes from './routes/amplifikasiRoutes';
 import monitoringRoutes from './routes/monitoringRoutes';
 import authRoutes from './routes/authRoutes';
+import howRoutes from "./routes/howRoutes";
+import doRoutes from "./routes/doRoutes";
+import dateRoutes from "./routes/dateRoutes";
 
 dotenv.config();
 const app = express();
@@ -33,6 +36,9 @@ app.use('/api/perencanaan', perencanaanRoutes);
 app.use('/api/indikator', indikatorRoutes);
 app.use('/api/amplifikasi', amplifikasiRoutes);
 app.use('/api/monitoring', monitoringRoutes);
+app.use('/api/how', howRoutes);
+app.use('/api/do', doRoutes);
+app.use('/api/date', dateRoutes);
 
 app.get('/', (_, res) => {
     res.send('API siap jalan 🛠️');
