@@ -12,7 +12,7 @@ export class DoRepository {
     }
 
     async findById(id: string) {
-        return DoModel.findById({ id });
+        return DoModel.findById(id);
     }
 
     async create(data: any) {

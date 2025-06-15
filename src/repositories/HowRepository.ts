@@ -13,7 +13,7 @@ export class HowRepository {
     }
 
     async findById(id: string) {
-        return HowModel.findById({ id });
+        return HowModel.findById(id);
     }
 
     async create(data: any) {

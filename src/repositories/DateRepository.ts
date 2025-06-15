@@ -12,7 +12,7 @@ export class DateRepository {
     }
 
     async findById(id: string) {
-        return DateModel.findById({ id });
+        return DateModel.findById(id);
     }
 
     async create(data: any) {
