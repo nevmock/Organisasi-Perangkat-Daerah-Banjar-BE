@@ -22,7 +22,7 @@ export class HowRepository {
     }
 
     async update(id: string, data: any) {
-        return HowModel.findOneAndUpdate({ id }, data, { new: true });
+        return HowModel.findByIdAndUpdate({ id }, data, { new: true });
     }
 
     async delete(id: string) {

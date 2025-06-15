@@ -21,7 +21,7 @@ export class DateRepository {
     }
 
     async update(id: string, data: any) {
-        return DateModel.findOneAndUpdate({ id }, data, { new: true });
+        return DateModel.findByIdAndUpdate({ id }, data, { new: true });
     }
 
     async delete(id: string) {
