@@ -13,11 +13,12 @@ export class HowRepository {
     }
 
     async findById(id: string) {
-        return HowModel.findOne({ id });
+        return HowModel.findById({ id });
     }
 
     async create(data: any) {
-        return HowModel.create(data);
+        const how = new HowModel(data);
+        return how.save();
     }
 
     async update(id: string, data: any) {
