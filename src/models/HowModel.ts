@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 
 const howSchema = new mongoose.Schema({
-    nama_program: { type: String, required: true },
-    tujuan_program: { type: String, required: true },
-    sasaran_program: { type: String, required: true },
+    nama_program: { type: String, required: true, default: '' },
+    tujuan_program: { type: String, required: true, default: '' },
+    sasaran_program: { type: String, required: true, default: '' },
     rencana_output: {
         kuantitatif: [{ type: String }],
         kualitatif: [{ type: String }]
