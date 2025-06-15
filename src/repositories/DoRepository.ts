@@ -21,7 +21,7 @@ export class DoRepository {
     }
 
     async update(id: string, data: any) {
-        return DoModel.findByIdAndUpdate({ id }, data, { new: true });
+        return DoModel.findByIdAndUpdate(id, data, { new: true });
     }
 
     async delete(id: string) {
