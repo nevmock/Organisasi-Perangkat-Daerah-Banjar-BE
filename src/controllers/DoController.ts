@@ -119,4 +119,30 @@ export class DoController {
             res.status(500).json({ error: 'Failed to search do' });
         }
     };
+
+    addDokumentasi = async (req: Request, res: Response): Promise<void> => {
+        const userId = req.user?.id;
+        if (!userId) {
+            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            return;
+        }
+
+        const doId = req.params.id;
+        const fileUrls = (req.files as Express.Multer.File[]).map(
+            (file) => `/uploads/dokumentasi/${file.filename}`
+        );
+
+        try {
+            const updated = await this.service.addDokumentasi(doId, fileUrls, userId);
+            if (!updated) {
+                res.status(404).json({ error: 'Do not found or unauthorized' });
+                return;
+            }
+            res.status(200).json(updated);
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Failed to add dokumentasi' });
+        }
+    };
+
 }

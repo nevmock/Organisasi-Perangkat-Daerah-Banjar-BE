@@ -125,4 +125,28 @@ export class DateController {
             res.status(500).json({ error: 'Failed to search dates' });
         }
     };
+
+    addDokumentasi = async (req: Request, res: Response): Promise<void> => {
+        const userId = req.user?.id;
+        if (!userId) {
+            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            return;
+        }
+
+        const { id } = req.params;
+        const files = req.files as Express.Multer.File[];
+
+        if (!files || files.length === 0) {
+            res.status(400).json({ error: 'No files uploaded' });
+            return;
+        }
+
+        try {
+            const data = await this.service.addDokumentasi(id, userId, files);
+            res.json(data);
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Failed to upload laporan files' });
+        }
+    };
 }

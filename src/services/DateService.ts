@@ -30,4 +30,8 @@ export class DateService {
     async searchDate(query: string, userId: string, page = 1, limit = 10) {
         return this.repo.search(query, userId, page, limit);
     }
+
+    async addDokumentasi(id: string, userId: string, files: Express.Multer.File[]) {
+        return this.repo.uploadFile(id, userId, files);
+    }
 }

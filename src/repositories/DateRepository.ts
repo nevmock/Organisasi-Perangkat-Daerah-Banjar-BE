@@ -91,4 +91,14 @@ export class DateRepository {
             totalPages: Math.ceil(total / limit),
         };
     }
+
+    async uploadFile(id: string, userId: string, files: Express.Multer.File[]) {
+        const filePaths = files.map((file) => file.path); // atau bisa disesuaikan ke URL publik
+
+        return DateModel.findOneAndUpdate(
+            { _id: id, createdBy: userId },
+            { $push: { link_laporan_pdf: { $each: filePaths } } },
+            { new: true }
+        );
+    }
 }
