@@ -1,42 +1,47 @@
 import { DateModel } from '../models/DateModel';
-import {HowModel} from "../models/HowModel";
 
 export class DateRepository {
-    async findAll() {
-        return DateModel.find()
+    async findAllByUser(userId: string) {
+        return DateModel.find({ createdBy: userId })
             .sort({ createdAt: -1 });
     }
 
-    async findAllWithPopulate() {
-        return DateModel.find()
+    async findAllWithPopulateByUser(userId: string) {
+        return DateModel.find({ createdBy: userId })
+            .populate('nama_program')
             .sort({ createdAt: -1 });
     }
 
-    async findById(id: string) {
-        return DateModel.findById(id);
+    async findById(id: string, userId: string) {
+        return DateModel.findOne({ _id: id, createdBy: userId })
+            .populate('nama_program');
     }
 
-    async create(data: any) {
-        // const program = new DateModel(data);
-        // return program.save();
-        return DateModel.create(data)
+    async create(data: any, userId: string) {
+        return DateModel.create({ ...data, createdBy: userId });
     }
 
-    async update(id: string, data: any) {
-        return DateModel.findByIdAndUpdate(id, data, { new: true });
+    async update(id: string, data: any, userId: string) {
+        return DateModel.findOneAndUpdate(
+            { _id: id, createdBy: userId },
+            data,
+            { new: true }
+        );
     }
 
-    async delete(id: string) {
-        return DateModel.findOneAndDelete({ id });
+    async delete(id: string, userId: string) {
+        return DateModel.findOneAndDelete({ _id: id, createdBy: userId });
     }
 
-    async search(query: string) {
+    async search(query: string, userId: string) {
         return DateModel.find({
+            createdBy: userId,
             $or: [
-                { nama_program: { $regex: query, $options: 'i' } },
                 { status_laporan: { $regex: query, $options: 'i' } },
-                { link_laporan_pdf: { $regex: query, $options: 'i' } }
+                { link_laporan_pdf: { $elemMatch: { $regex: query, $options: 'i' } } }
             ]
-        }).sort({ createdAt: -1 });
+        })
+        .populate('nama_program')
+        .sort({ createdAt: -1 });
     }
 }

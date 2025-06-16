@@ -1,35 +1,33 @@
 import { DoRepository } from '../repositories/DoRepository';
-import { HowRepository } from '../repositories/HowRepository';
 
 export class DoService {
     private repo = new DoRepository();
-    private howRepo = new HowRepository();
 
-    async getAllDo() {
-        return this.repo.findAll();
+    async getAllDo(userId: string) {
+        return this.repo.findAllByUser(userId);
     }
 
-    async getAllDoWithPopulate() {
-        return this.repo.findAllWithPopulate();
+    async getAllDoWithPopulate(userId: string) {
+        return this.repo.findAllWithPopulateByUser(userId);
     }
 
-    async getDo(id: string) {
-        return this.repo.findById(id); // populated
+    async getDo(id: string, userId: string) {
+        return this.repo.findById(id, userId); // include createdBy check
     }
 
-    async createDoWithIndikators(data: any) {
-        return this.repo.create(data);
+    async createDoWithIndikators(data: any, userId: string) {
+        return this.repo.create(data, userId);
     }
 
-    async updateDo(id: string, data: any) {
-        return this.repo.update(id, data);
-    }   
-
-    async deleteDo(id: string) {
-        return this.repo.delete(id);
+    async updateDo(id: string, data: any, userId: string) {
+        return this.repo.update(id, data, userId);
     }
 
-    async searchDo(query: string) {
-        return this.repo.search(query);
+    async deleteDo(id: string, userId: string) {
+        return this.repo.delete(id, userId);
+    }
+
+    async searchDo(query: string, userId: string) {
+        return this.repo.search(query, userId);
     }
 }
