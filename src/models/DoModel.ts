@@ -13,7 +13,7 @@ const doSchema = new mongoose.Schema({
 
     rincian_kegiatan: { type: String, required: true },
     capaian_output: { type: String, required: true },
-    dokumentasi_kegiatan: { type: [String], default: [] },
+    dokumentasi_kegiatan: [{ type: String }],
     kendala: { type: String },
     rekomendasi: { type: String }
 }, { timestamps: true });
