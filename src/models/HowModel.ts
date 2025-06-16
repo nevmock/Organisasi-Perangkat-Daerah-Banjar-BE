@@ -11,7 +11,7 @@ const howSchema = new mongoose.Schema({
     target_indikator_kinerja: {
         jumlah_peserta: { type: Number, required: true },
         jumlah_pelatihan: { type: Number, required: true },
-        tingkat_kepuasan: { type: String, required: true }
+        tingkat_kepuasan: { type: Number, required: true }
     },
     rencana_lokasi: {
         kelurahan: { type: String, required: true },
