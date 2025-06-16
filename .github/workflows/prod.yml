@@ -43,5 +43,6 @@ jobs:
             docker rm sia-banjar-dev || true
             docker run -d --name sia-banjar-dev \
               -e MONGO_URI=${{ secrets.PROD_MONGO_URI }} \
+              -e PORT=${{ secrets.PROD_PORT }} \
               -p 3018:3018 \
               kevinirawand/sia-banjar:dev
