@@ -24,7 +24,7 @@ const PORT = process.env.PORT || 5000;
 // }));
 app.use(cors())
 
-connectDB();
+connectDB().then(() => null);
 
 app.use(express.json());
 app.use('/public', express.static('public'));
