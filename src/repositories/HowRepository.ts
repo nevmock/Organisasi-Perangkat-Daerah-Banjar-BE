@@ -1,37 +1,39 @@
 import { HowModel } from '../models/HowModel';
 
 export class HowRepository {
-    async findAll() {
-        return HowModel.find()
+    async findAllByUser(userId: string) {
+        return HowModel.find({ createdBy: userId }).sort({ createdAt: -1 });
+    }
+
+    async findAllWithPopulateByUser(userId: string) {
+        return HowModel.find({ createdBy: userId })
+            .populate('createdBy', 'email unit') // populate user info
             .sort({ createdAt: -1 });
     }
 
-    async findAllWithPopulate() {
-        return HowModel.find()
-            // ganti 'createdBy' jika ada referensi di future
-            .sort({ createdAt: -1 });
+    async findById(id: string, userId: string) {
+        return HowModel.findOne({ _id: id, createdBy: userId });
     }
 
-    async findById(id: string) {
-        return HowModel.findById(id);
+    async create(data: any, userId: string) {
+        return HowModel.create({ ...data, createdBy: userId });
     }
 
-    async create(data: any) {
-        // const how = new HowModel(data);
-        // return how.save();
-        return HowModel.create(data)
+    async update(id: string, data: any, userId: string) {
+        return HowModel.findOneAndUpdate(
+            { _id: id, createdBy: userId },
+            data,
+            { new: true }
+        );
     }
 
-    async update(id: string, data: any) {
-        return HowModel.findByIdAndUpdate(id, data, { new: true });
+    async delete(id: string, userId: string) {
+        return HowModel.findOneAndDelete({ _id: id, createdBy: userId });
     }
 
-    async delete(id: string) {
-        return HowModel.findOneAndDelete({ id });
-    }
-
-    async search(query: string) {
+    async search(query: string, userId: string) {
         return HowModel.find({
+            createdBy: userId,
             $or: [
                 { nama_program: { $regex: query, $options: 'i' } },
                 { tujuan_program: { $regex: query, $options: 'i' } },

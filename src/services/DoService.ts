@@ -1,7 +1,9 @@
 import { DoRepository } from '../repositories/DoRepository';
+import { HowRepository } from '../repositories/HowRepository';
 
 export class DoService {
     private repo = new DoRepository();
+    private howRepo = new HowRepository();
 
     async getAllDo() {
         return this.repo.findAll();

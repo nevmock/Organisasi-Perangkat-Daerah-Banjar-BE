@@ -6,7 +6,7 @@ const controller = new DoController();
 
 router.get('/', controller.getAll);
 router.get('/search', controller.search);
-router.get('/popluted', controller.getAllByAmplifikasi);
+router.get('/populated', controller.getAllByAmplifikasi);
 router.get('/getById/:id', controller.getById);
 
 router.post('/', controller.create);
