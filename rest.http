@@ -1,3 +1,92 @@
+### Do
+POST https://sia-api.nevmock.id/api/do
+Content-Type: application/json
+
+{"nama_program":"asda","kolaborator":[{"nama":"sad","peran":"asda"}],"rincian_kegiatan":"sd","capaian_output":"asd","dokumentasi_kegiatan":"kj","kendala":"kjh","rekomendasi":"jkh"}
+
+### DATE
+POST https://sia-api.nevmock.id/api/date
+Content-Type: application/json
+
+{"nama_program":"asd","tanggal_mulai":"2005-10-02","tanggal_selesai":"2022-05-02","link_laporan_pdf":"google.com","status":"draft"}
+
+### HOW
+PUT https://sia-api.nevmock.id/api/how/684f575a808c74700ad1fadc
+Content-Type: application/json
+
+{
+  "nama_program": "asd",
+  "tujuan_program": "asd",
+  "sasaran_program": "asd",
+  "rencana_output": {
+    "kuantitatif": [
+      "sad",
+      "asd"
+    ],
+    "kualitatif": [
+      "asd",
+      "asd"
+    ]
+  },
+  "target_indikator_kinerja": {
+    "jumlah_peserta": 12,
+    "jumlah_pelatihan": 12,
+    "tingkat_kepuasan": "56%"
+  },
+  "rencana_lokasi": {
+    "kelurahan": "asd",
+    "kecamatan": "asd",
+    "kota": "asd"
+  },
+  "opd_pengusul_utama": "asd",
+  "opd_kolaborator": [
+    "asd",
+    "asd"
+  ]
+}
+
+###
+
+POST https://sia-api.nevmock.id/api/how
+Content-Type: application/json
+
+{
+  "nama_program": "asd",
+  "tujuan_program": "asd",
+  "sasaran_program": "asd",
+  "rencana_output": {
+    "kuantitatif": [
+      "sad",
+      "asd"
+    ],
+    "kualitatif": [
+      "asd",
+      "asd"
+    ]
+  },
+  "target_indikator_kinerja": {
+    "jumlah_peserta": 12,
+    "jumlah_pelatihan": 12,
+    "tingkat_kepuasan": "56%"
+  },
+  "rencana_lokasi": {
+    "kelurahan": "asd",
+    "kecamatan": "asd",
+    "kota": "asd"
+  },
+  "opd_pengusul_utama": "asd",
+  "opd_kolaborator": [
+    "asd",
+    "asd"
+  ]
+}
+
+
+###
+GET https://sia-api.nevmock.id/api/do/getById/684f3d61f8ac03f9e19ede3d
+Content-Type: application/json
+
+
 ### 🔷 PERENCANAAN
 
 ### ✅ Get All Perencanaan
@@ -180,12 +269,12 @@ GET http://localhost:5050/api/monitoring/performance
 
 
 ### Register User
-POST http://localhost:5050/api/auth/register
+POST https://sia-api.nevmock.id/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "user@example.com",
-  "password": "password123",
+  "email": "<nama_opd>@banjar.com",
+  "password": "pass123",
   "unit": "IT",
   "role": "admin"
 }
