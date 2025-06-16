@@ -30,7 +30,7 @@ jobs:
       - name: Push Docker Image
         run: docker push kevinirawand/sia-banjar:dev
 
-      - name: Deploy to Dev Server
+      - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -43,5 +43,5 @@ jobs:
             docker rm sia-banjar-dev || true
             docker run -d --name sia-banjar-dev \
               -e MONGO_URI=${{ secrets.PROD_MONGO_URI }} \
-              -p 3000:3018 \
+              -p 3018:3018 \
               kevinirawand/sia-banjar:dev
