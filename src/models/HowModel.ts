@@ -26,7 +26,12 @@ const howSchema = new mongoose.Schema({
         }]
     },
     opd_pengusul_utama: { type: String, required: true },
-    opd_kolaborator: [{ type: String }]
+    opd_kolaborator: [{ type: String }],
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    }
 }, { timestamps: true });
 
 export const HowModel = mongoose.model('How', howSchema);

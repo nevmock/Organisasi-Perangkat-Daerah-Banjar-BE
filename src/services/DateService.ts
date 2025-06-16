@@ -3,31 +3,35 @@ import { DateRepository } from '../repositories/DateRepository';
 export class DateService {
     private repo = new DateRepository();
 
-    async getAllDate() {
-        return this.repo.findAll();
+    async getAllDate(userId: string, page = 1, limit = 10) {
+        return this.repo.findAllByUser(userId, page, limit);
     }
 
-    async getAllDateWithPopulate() {
-        return this.repo.findAllWithPopulate();
+    async getAllDateWithPopulate(userId: string, page = 1, limit = 10) {
+        return this.repo.findAllWithPopulateByUser(userId, page, limit);
     }
 
-    async getDate(id: string) {
-        return this.repo.findById(id); // populated
+    async getDate(id: string, userId: string) {
+        return this.repo.findById(id, userId);
     }
 
-    async createDateWithIndikators(data: any) {
-        return this.repo.create(data);
+    async createDate(data: any, userId: string) {
+        return this.repo.create(data, userId);
     }
 
-    async updateDate(id: string, data: any) {
-        return this.repo.update(id, data);
-    }   
-
-    async deleteDate(id: string) {
-        return this.repo.delete(id);
+    async updateDate(id: string, data: any, userId: string) {
+        return this.repo.update(id, data, userId);
     }
 
-    async searchDate(query: string) {
-        return this.repo.search(query);
+    async deleteDate(id: string, userId: string) {
+        return this.repo.delete(id, userId);
+    }
+
+    async searchDate(query: string, userId: string, page = 1, limit = 10) {
+        return this.repo.search(query, userId, page, limit);
+    }
+
+    async addDokumentasi(id: string, userId: string, files: Express.Multer.File[]) {
+        return this.repo.uploadFile(id, userId, files);
     }
 }

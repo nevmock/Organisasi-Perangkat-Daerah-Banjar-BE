@@ -1,37 +1,69 @@
 import { HowModel } from '../models/HowModel';
 
 export class HowRepository {
-    async findAll() {
-        return HowModel.find()
-            .sort({ createdAt: -1 });
+    async findAllByUser(userId: string, page = 1, limit = 10) {
+        const skip = (page - 1) * limit;
+
+        const [data, total] = await Promise.all([
+            HowModel.find({ createdBy: userId }).skip(skip).limit(limit).sort({ createdAt: -1 }),
+            HowModel.countDocuments({ createdBy: userId }),
+        ]);
+
+        return {
+            data,
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        };
     }
 
-    async findAllWithPopulate() {
-        return HowModel.find()
-            // ganti 'createdBy' jika ada referensi di future
-            .sort({ createdAt: -1 });
+    async findAllWithPopulateByUser(userId: string, page = 1, limit = 10) {
+        const skip = (page - 1) * limit;
+
+        const [data, total] = await Promise.all([
+            HowModel.find({ createdBy: userId })
+                .populate('createdBy', 'email unit')
+                .skip(skip)
+                .limit(limit)
+                .sort({ createdAt: -1 }),
+            HowModel.countDocuments({ createdBy: userId }),
+        ]);
+
+        return {
+            data,
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        };
     }
 
-    async findById(id: string) {
-        return HowModel.findById(id);
+    async findById(id: string, userId: string) {
+        return HowModel.findOne({ _id: id, createdBy: userId });
     }
 
-    async create(data: any) {
-        // const how = new HowModel(data);
-        // return how.save();
-        return HowModel.create(data)
+    async create(data: any, userId: string) {
+        return HowModel.create({ ...data, createdBy: userId });
     }
 
-    async update(id: string, data: any) {
-        return HowModel.findByIdAndUpdate(id, data, { new: true });
+    async update(id: string, data: any, userId: string) {
+        return HowModel.findOneAndUpdate(
+            { _id: id, createdBy: userId },
+            data,
+            { new: true }
+        );
     }
 
-    async delete(id: string) {
-        return HowModel.findOneAndDelete({ id });
+    async delete(id: string, userId: string) {
+        return HowModel.findOneAndDelete({ _id: id, createdBy: userId });
     }
 
-    async search(query: string) {
-        return HowModel.find({
+    async search(query: string, userId: string, page = 1, limit = 10) {
+        const skip = (page - 1) * limit;
+
+        const filter = {
+            createdBy: userId,
             $or: [
                 { nama_program: { $regex: query, $options: 'i' } },
                 { tujuan_program: { $regex: query, $options: 'i' } },
@@ -41,7 +73,20 @@ export class HowRepository {
                 { 'rencana_lokasi.kota': { $regex: query, $options: 'i' } },
                 { opd_pengusul_utama: { $regex: query, $options: 'i' } },
                 { opd_kolaborator: { $elemMatch: { $regex: query, $options: 'i' } } },
-            ]
-        }).sort({ createdAt: -1 });
+            ],
+        };
+
+        const [data, total] = await Promise.all([
+            HowModel.find(filter).skip(skip).limit(limit).sort({ createdAt: -1 }),
+            HowModel.countDocuments(filter),
+        ]);
+
+        return {
+            data,
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        };
     }
 }

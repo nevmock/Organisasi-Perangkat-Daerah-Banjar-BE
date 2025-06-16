@@ -1,47 +1,109 @@
 import { DoModel } from '../models/DoModel';
-import {HowModel} from "../models/HowModel";
 
 export class DoRepository {
-    async findAll() {
-        return DoModel.find()
-            .sort({ createdAt: -1 });
+    async findAllByUser(userId: string, page = 1, limit = 10) {
+        const skip = (page - 1) * limit;
+
+        const [data, total] = await Promise.all([
+            DoModel.find({ createdBy: userId }).skip(skip).limit(limit).sort({ createdAt: -1 }),
+            DoModel.countDocuments({ createdBy: userId }),
+        ]);
+
+        return {
+            data,
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        };
     }
 
-    async findAllWithPopulate() {
-        return DoModel.find()
-            .sort({ createdAt: -1 });
+    async findAllWithPopulateByUser(userId: string, page = 1, limit = 10) {
+        const skip = (page - 1) * limit;
+
+        const [data, total] = await Promise.all([
+            DoModel.find({ createdBy: userId })
+                .populate('nama_program')
+                .skip(skip)
+                .limit(limit)
+                .sort({ createdAt: -1 }),
+            DoModel.countDocuments({ createdBy: userId }),
+        ]);
+
+        return {
+            data,
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        };
     }
 
-    async findById(id: string) {
-        return DoModel.findById(id);
+    async findById(id: string, userId: string) {
+        return DoModel.findOne({ _id: id, createdBy: userId }).populate('nama_program');
     }
 
-    async create(data: any) {
-        // const program = new DoModel(data);
-        // return program.save();
-        return DoModel.create(data)
+    async create(data: any, userId: string) {
+        return DoModel.create({ ...data, createdBy: userId });
     }
 
-    async update(id: string, data: any) {
-        return DoModel.findByIdAndUpdate(id, data, { new: true });
+    async update(id: string, data: any, userId: string) {
+        return DoModel.findOneAndUpdate(
+            { _id: id, createdBy: userId },
+            data,
+            { new: true }
+        );
     }
 
-    async delete(id: string) {
-        return DoModel.findOneAndDelete({ id });
+    async delete(id: string, userId: string) {
+        return DoModel.findOneAndDelete({ _id: id, createdBy: userId });
     }
 
-    async search(query: string) {
-        return DoModel.find({
+    async search(query: string, userId: string, page = 1, limit = 10) {
+        const skip = (page - 1) * limit;
+
+        const filter = {
+            createdBy: userId,
             $or: [
-                { nama_program: { $regex: query, $options: 'i' } },
                 { rincian_kegiatan: { $regex: query, $options: 'i' } },
                 { capaian_output: { $regex: query, $options: 'i' } },
                 { dokumentasi_kegiatan: { $regex: query, $options: 'i' } },
                 { kendala: { $regex: query, $options: 'i' } },
                 { rekomendasi: { $regex: query, $options: 'i' } },
-                { kolaborator: { $elemMatch: { nama: { $regex: query, $options: 'i' } } } },
-                { kolaborator: { $elemMatch: { peran: { $regex: query, $options: 'i' } } } },
+                {
+                    kolaborator: {
+                        $elemMatch: {
+                            $or: [
+                                { nama: { $regex: query, $options: 'i' } },
+                                { peran: { $regex: query, $options: 'i' } },
+                            ]
+                        }
+                    }
+                }
             ]
-        }).sort({ createdAt: -1 });
+        };
+
+        const [data, total] = await Promise.all([
+            DoModel.find(filter).populate('nama_program').skip(skip).limit(limit).sort({ createdAt: -1 }),
+            DoModel.countDocuments(filter),
+        ]);
+
+        return {
+            data,
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        };
     }
+    
+    async addDokumentasi(id: string, fileUrls: string[], userId: string) {
+        const doItem = await DoModel.findOne({ _id: id, createdBy: userId });
+        if (!doItem) return null;
+
+        doItem.dokumentasi_kegiatan.push(...fileUrls);
+        await doItem.save();
+        return doItem;
+    }
+
 }

@@ -3,31 +3,36 @@ import { DoRepository } from '../repositories/DoRepository';
 export class DoService {
     private repo = new DoRepository();
 
-    async getAllDo() {
-        return this.repo.findAll();
+    async getAllDo(userId: string, page: number = 1, limit: number = 10) {
+        return this.repo.findAllByUser(userId, page, limit);
     }
 
-    async getAllDoWithPopulate() {
-        return this.repo.findAllWithPopulate();
+    async getAllDoWithPopulate(userId: string, page: number = 1, limit: number = 10) {
+        return this.repo.findAllWithPopulateByUser(userId, page, limit);
     }
 
-    async getDo(id: string) {
-        return this.repo.findById(id); // populated
+    async getDo(id: string, userId: string) {
+        return this.repo.findById(id, userId);
     }
 
-    async createDoWithIndikators(data: any) {
-        return this.repo.create(data);
+    async createDoWithIndikators(data: any, userId: string) {
+        return this.repo.create(data, userId);
     }
 
-    async updateDo(id: string, data: any) {
-        return this.repo.update(id, data);
-    }   
-
-    async deleteDo(id: string) {
-        return this.repo.delete(id);
+    async updateDo(id: string, data: any, userId: string) {
+        return this.repo.update(id, data, userId);
     }
 
-    async searchDo(query: string) {
-        return this.repo.search(query);
+    async deleteDo(id: string, userId: string) {
+        return this.repo.delete(id, userId);
     }
+
+    async searchDo(query: string, userId: string, page: number = 1, limit: number = 10) {
+        return this.repo.search(query, userId, page, limit);
+    }
+
+    async addDokumentasi(id: string, fileUrls: string[], userId: string) {
+        return this.repo.addDokumentasi(id, fileUrls, userId);
+    }
+
 }

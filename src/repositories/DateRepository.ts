@@ -1,42 +1,104 @@
 import { DateModel } from '../models/DateModel';
-import {HowModel} from "../models/HowModel";
 
 export class DateRepository {
-    async findAll() {
-        return DateModel.find()
-            .sort({ createdAt: -1 });
+    async findAllByUser(userId: string, page = 1, limit = 10) {
+        const skip = (page - 1) * limit;
+
+        const [data, total] = await Promise.all([
+            DateModel.find({ createdBy: userId })
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limit),
+            DateModel.countDocuments({ createdBy: userId }),
+        ]);
+
+        return {
+            data,
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        };
     }
 
-    async findAllWithPopulate() {
-        return DateModel.find()
-            .sort({ createdAt: -1 });
+    async findAllWithPopulateByUser(userId: string, page = 1, limit = 10) {
+        const skip = (page - 1) * limit;
+
+        const [data, total] = await Promise.all([
+            DateModel.find({ createdBy: userId })
+                .populate('nama_program')
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limit),
+            DateModel.countDocuments({ createdBy: userId }),
+        ]);
+
+        return {
+            data,
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        };
     }
 
-    async findById(id: string) {
-        return DateModel.findById(id);
+    async findById(id: string, userId: string) {
+        return DateModel.findOne({ _id: id, createdBy: userId })
+            .populate('nama_program');
     }
 
-    async create(data: any) {
-        // const program = new DateModel(data);
-        // return program.save();
-        return DateModel.create(data)
+    async create(data: any, userId: string) {
+        return DateModel.create({ ...data, createdBy: userId });
     }
 
-    async update(id: string, data: any) {
-        return DateModel.findByIdAndUpdate(id, data, { new: true });
+    async update(id: string, data: any, userId: string) {
+        return DateModel.findOneAndUpdate(
+            { _id: id, createdBy: userId },
+            data,
+            { new: true }
+        );
     }
 
-    async delete(id: string) {
-        return DateModel.findOneAndDelete({ id });
+    async delete(id: string, userId: string) {
+        return DateModel.findOneAndDelete({ _id: id, createdBy: userId });
     }
 
-    async search(query: string) {
-        return DateModel.find({
+    async search(query: string, userId: string, page = 1, limit = 10) {
+        const skip = (page - 1) * limit;
+
+        const filter = {
+            createdBy: userId,
             $or: [
-                { nama_program: { $regex: query, $options: 'i' } },
                 { status_laporan: { $regex: query, $options: 'i' } },
-                { link_laporan_pdf: { $regex: query, $options: 'i' } }
-            ]
-        }).sort({ createdAt: -1 });
+                { link_laporan_pdf: { $elemMatch: { $regex: query, $options: 'i' } } },
+            ],
+        };
+
+        const [data, total] = await Promise.all([
+            DateModel.find(filter)
+                .populate('nama_program')
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limit),
+            DateModel.countDocuments(filter),
+        ]);
+
+        return {
+            data,
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        };
+    }
+
+    async uploadFile(id: string, userId: string, files: Express.Multer.File[]) {
+        const filePaths = files.map((file) => file.path); // atau bisa disesuaikan ke URL publik
+
+        return DateModel.findOneAndUpdate(
+            { _id: id, createdBy: userId },
+            { $push: { link_laporan_pdf: { $each: filePaths } } },
+            { new: true }
+        );
     }
 }

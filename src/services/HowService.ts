@@ -3,31 +3,31 @@ import { HowRepository } from '../repositories/HowRepository';
 export class HowService {
     private repo = new HowRepository();
 
-    async getAllHow() {
-        return this.repo.findAll();
+    async getAllHowByUser(userId: string, page: number, limit: number) {
+        return this.repo.findAllByUser(userId, page, limit);
     }
 
-    async getAllHowWithPopulate() {
-        return this.repo.findAllWithPopulate();
+    async getAllHowWithPopulateByUser(userId: string, page: number, limit: number) {
+        return this.repo.findAllWithPopulateByUser(userId, page, limit);
     }
 
-    async getHow(id: string) {
-        return this.repo.findById(id); // populated
+    async getHow(id: string, userId: string) {
+        return this.repo.findById(id, userId);
     }
 
-    async createHowWithIndikators(data: any) {
-        return this.repo.create(data);
+    async createHowWithIndikators(data: any, userId: string) {
+        return this.repo.create(data, userId);
     }
 
-    async updateHow(id: string, data: any) {
-        return this.repo.update(id, data);
-    }   
-
-    async deleteHow(id: string) {
-        return this.repo.delete(id);
+    async updateHow(id: string, data: any, userId: string) {
+        return this.repo.update(id, data, userId);
     }
 
-    async searchHow(query: string) {
-        return this.repo.search(query);
+    async deleteHow(id: string, userId: string) {
+        return this.repo.delete(id, userId);
+    }
+
+    async searchHow(query: string, userId: string, page: number, limit: number) {
+        return this.repo.search(query, userId, page, limit);
     }
 }
