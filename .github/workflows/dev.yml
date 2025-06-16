@@ -1,49 +1,48 @@
-name: Build and Deploy
+name: CI/CD Prod
 
 on:
   push:
     branches:
-      - 'misc' # Trigger on all branches
+      - dev
+
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20.11.0'
-    - name: Load variables
-      run: |
-        touch .env
-        echo PORT=${{ secrets.PORT }} >> .env
-        echo MONGO_URI=${{ secrets.MONGO_URI }} >> .env
-    - name: Install dependencies
-      run: npm install
-        
-  deploy:
-    if: github.ref == 'refs/heads/main'  # Only deploy on main branch
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    - name: Deploy app
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        passphrase: ${{ secrets.SSH_PASSPHRASE }}
-        script: |
-          export NVM_DIR="/home/kanzen/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          nvm use 20
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-          cd /home/kanzen/Organisasi-Perangkat-Daerah-Banjar-BE
-          git reset --hard HEAD
-          git pull origin main --rebase
-          npm install
-          pm2 delete opd-banjar-be-dev:service
+      - name: Install dependencies
+        run: npm install
 
-          
+      - name: Docker Login
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build Docker Image
+        run: docker build -t kevinirawand/sia-banjar-dev:latest .
+
+      - name: Push Docker Image
+        run: docker push kevinirawand/sia-banjar-dev:latest
+
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            docker pull kevinirawand/sia-banjar-dev:latest
+            docker stop sia-banjar-dev || true
+            docker rm sia-banjar-dev || true
+            docker run -d --name sia-banjar-dev \
+              -e MONGO_URI=${{ secrets.DEV_MONGO_URI }} \
+              -e PORT=${{ secrets.DEV_PORT }} \
+              -p ${{secrets.DEV_PORT}}:${{secrets.DEV_PORT}} \
+              kevinirawand/sia-banjar-dev:latest
