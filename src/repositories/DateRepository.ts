@@ -1,15 +1,45 @@
 import { DateModel } from '../models/DateModel';
 
 export class DateRepository {
-    async findAllByUser(userId: string) {
-        return DateModel.find({ createdBy: userId })
-            .sort({ createdAt: -1 });
+    async findAllByUser(userId: string, page = 1, limit = 10) {
+        const skip = (page - 1) * limit;
+
+        const [data, total] = await Promise.all([
+            DateModel.find({ createdBy: userId })
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limit),
+            DateModel.countDocuments({ createdBy: userId }),
+        ]);
+
+        return {
+            data,
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        };
     }
 
-    async findAllWithPopulateByUser(userId: string) {
-        return DateModel.find({ createdBy: userId })
-            .populate('nama_program')
-            .sort({ createdAt: -1 });
+    async findAllWithPopulateByUser(userId: string, page = 1, limit = 10) {
+        const skip = (page - 1) * limit;
+
+        const [data, total] = await Promise.all([
+            DateModel.find({ createdBy: userId })
+                .populate('nama_program')
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limit),
+            DateModel.countDocuments({ createdBy: userId }),
+        ]);
+
+        return {
+            data,
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        };
     }
 
     async findById(id: string, userId: string) {
@@ -33,15 +63,32 @@ export class DateRepository {
         return DateModel.findOneAndDelete({ _id: id, createdBy: userId });
     }
 
-    async search(query: string, userId: string) {
-        return DateModel.find({
+    async search(query: string, userId: string, page = 1, limit = 10) {
+        const skip = (page - 1) * limit;
+
+        const filter = {
             createdBy: userId,
             $or: [
                 { status_laporan: { $regex: query, $options: 'i' } },
-                { link_laporan_pdf: { $elemMatch: { $regex: query, $options: 'i' } } }
-            ]
-        })
-        .populate('nama_program')
-        .sort({ createdAt: -1 });
+                { link_laporan_pdf: { $elemMatch: { $regex: query, $options: 'i' } } },
+            ],
+        };
+
+        const [data, total] = await Promise.all([
+            DateModel.find(filter)
+                .populate('nama_program')
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limit),
+            DateModel.countDocuments(filter),
+        ]);
+
+        return {
+            data,
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        };
     }
 }

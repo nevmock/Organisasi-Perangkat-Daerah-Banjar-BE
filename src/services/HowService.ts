@@ -3,12 +3,12 @@ import { HowRepository } from '../repositories/HowRepository';
 export class HowService {
     private repo = new HowRepository();
 
-    async getAllHowByUser(userId: string) {
-        return this.repo.findAllByUser(userId);
+    async getAllHowByUser(userId: string, page: number, limit: number) {
+        return this.repo.findAllByUser(userId, page, limit);
     }
 
-    async getAllHowWithPopulateByUser(userId: string) {
-        return this.repo.findAllWithPopulateByUser(userId);
+    async getAllHowWithPopulateByUser(userId: string, page: number, limit: number) {
+        return this.repo.findAllWithPopulateByUser(userId, page, limit);
     }
 
     async getHow(id: string, userId: string) {
@@ -27,7 +27,7 @@ export class HowService {
         return this.repo.delete(id, userId);
     }
 
-    async searchHow(query: string, userId: string) {
-        return this.repo.search(query, userId);
+    async searchHow(query: string, userId: string, page: number, limit: number) {
+        return this.repo.search(query, userId, page, limit);
     }
 }

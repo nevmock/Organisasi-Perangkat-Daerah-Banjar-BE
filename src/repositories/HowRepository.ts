@@ -1,14 +1,42 @@
 import { HowModel } from '../models/HowModel';
 
 export class HowRepository {
-    async findAllByUser(userId: string) {
-        return HowModel.find({ createdBy: userId }).sort({ createdAt: -1 });
+    async findAllByUser(userId: string, page = 1, limit = 10) {
+        const skip = (page - 1) * limit;
+
+        const [data, total] = await Promise.all([
+            HowModel.find({ createdBy: userId }).skip(skip).limit(limit).sort({ createdAt: -1 }),
+            HowModel.countDocuments({ createdBy: userId }),
+        ]);
+
+        return {
+            data,
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        };
     }
 
-    async findAllWithPopulateByUser(userId: string) {
-        return HowModel.find({ createdBy: userId })
-            .populate('createdBy', 'email unit') // populate user info
-            .sort({ createdAt: -1 });
+    async findAllWithPopulateByUser(userId: string, page = 1, limit = 10) {
+        const skip = (page - 1) * limit;
+
+        const [data, total] = await Promise.all([
+            HowModel.find({ createdBy: userId })
+                .populate('createdBy', 'email unit')
+                .skip(skip)
+                .limit(limit)
+                .sort({ createdAt: -1 }),
+            HowModel.countDocuments({ createdBy: userId }),
+        ]);
+
+        return {
+            data,
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        };
     }
 
     async findById(id: string, userId: string) {
@@ -31,8 +59,10 @@ export class HowRepository {
         return HowModel.findOneAndDelete({ _id: id, createdBy: userId });
     }
 
-    async search(query: string, userId: string) {
-        return HowModel.find({
+    async search(query: string, userId: string, page = 1, limit = 10) {
+        const skip = (page - 1) * limit;
+
+        const filter = {
             createdBy: userId,
             $or: [
                 { nama_program: { $regex: query, $options: 'i' } },
@@ -43,7 +73,20 @@ export class HowRepository {
                 { 'rencana_lokasi.kota': { $regex: query, $options: 'i' } },
                 { opd_pengusul_utama: { $regex: query, $options: 'i' } },
                 { opd_kolaborator: { $elemMatch: { $regex: query, $options: 'i' } } },
-            ]
-        }).sort({ createdAt: -1 });
+            ],
+        };
+
+        const [data, total] = await Promise.all([
+            HowModel.find(filter).skip(skip).limit(limit).sort({ createdAt: -1 }),
+            HowModel.countDocuments(filter),
+        ]);
+
+        return {
+            data,
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        };
     }
 }
