@@ -18,4 +18,4 @@ COPY . .
 EXPOSE 3018
 
 # Perintah untuk menjalankan server Express
-CMD ["node", "src/index.js"]
+CMD ["npm", "run", "dev"]
