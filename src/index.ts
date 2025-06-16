@@ -30,7 +30,7 @@ app.use(express.json());
 app.use('/public', express.static('public'));
 
 app.use('/api/auth', authRoutes);
-// app.use(authenticateToken);
+app.use(authenticateToken);
 
 app.use('/api/perencanaan', perencanaanRoutes);
 app.use('/api/indikator', indikatorRoutes);
