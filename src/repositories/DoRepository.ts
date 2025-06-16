@@ -1,4 +1,5 @@
 import { DoModel } from '../models/DoModel';
+import {HowModel} from "../models/HowModel";
 
 export class DoRepository {
     async findAll() {
@@ -16,8 +17,9 @@ export class DoRepository {
     }
 
     async create(data: any) {
-        const program = new DoModel(data);
-        return program.save();
+        // const program = new DoModel(data);
+        // return program.save();
+        return DoModel.create(data)
     }
 
     async update(id: string, data: any) {

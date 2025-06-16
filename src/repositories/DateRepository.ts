@@ -1,4 +1,5 @@
 import { DateModel } from '../models/DateModel';
+import {HowModel} from "../models/HowModel";
 
 export class DateRepository {
     async findAll() {
@@ -16,8 +17,9 @@ export class DateRepository {
     }
 
     async create(data: any) {
-        const program = new DateModel(data);
-        return program.save();
+        // const program = new DateModel(data);
+        // return program.save();
+        return DateModel.create(data)
     }
 
     async update(id: string, data: any) {
