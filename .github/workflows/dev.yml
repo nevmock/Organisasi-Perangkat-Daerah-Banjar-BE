@@ -3,7 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - 'dev' # Trigger on all branches
+      - 'main' # Trigger on all branches
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -42,8 +42,8 @@ jobs:
 
           cd /home/kanzen/Organisasi-Perangkat-Daerah-Banjar-BE
           git reset --hard HEAD
-          git pull origin dev --rebase
+          git pull origin main --rebase
           npm install
-          pm2 restart opd-banjar-be:service
+          pm2 delete opd-banjar-be-dev:service
 
           
