@@ -1,0 +1,149 @@
+### ============================
+### HOW ENDPOINTS
+### ============================
+
+### Get All HOWs (With Pagination)
+GET http://localhost:5050/api/how?page=1&limit=10
+Authorization: Bearer {{TOKEN}}
+
+### Get All HOWs (No Pagination)
+GET http://localhost:5050/api/how?all=true
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9wZEBiYW5qYXIuY29tIiwicm9sZSI6ImFkbWluIiwiaWQiOiI2ODUwOWQ0MGZkMmM4NjAwNzIwODhiM2IiLCJpYXQiOjE3NTAxMTM2MDMsImV4cCI6MTc1MDExNzIwM30.bHpo-8S9CqXE2DAJL7K98a32kQj77w7jHMfJvnlFtos
+
+### Get HOW by ID
+GET http://localhost:5050/api/how/:id
+Authorization: Bearer {{TOKEN}}
+
+### Create HOW
+POST http://localhost:5050/api/how
+Authorization: Bearer {{TOKEN}}
+Content-Type: application/json
+
+{
+  "nama_program": "Program ABC",
+  "tujuan_program": "Meningkatkan literasi",
+  "sasaran_program": "Pemuda desa",
+  "rencana_output": {
+    "kuantitatif": ["100 peserta"],
+    "kualitatif": ["Peningkatan minat baca"]
+  },
+  "target_indikator_kinerja": {
+    "jumlah_peserta": 100,
+    "jumlah_pelatihan": 4,
+    "tingkat_kepuasan": 85
+  },
+  "rencana_lokasi": {
+    "kelurahan": "Mekarsari",
+    "kecamatan": "Cileungsi",
+    "kota": "Bogor"
+  },
+  "rencana_anggaran": {
+    "jumlah": 50000000,
+    "sumber_dana": [
+      { "jenis": "APBD", "persentase": 60 },
+      { "jenis": "CSR", "persentase": 40 }
+    ]
+  },
+  "opd_pengusul_utama": "Dinas Pendidikan",
+  "opd_kolaborator": ["Dinas Perpustakaan", "Kominfo"]
+}
+
+### Update HOW
+PUT http://localhost:5050/api/how/:id
+Authorization: Bearer {{TOKEN}}
+Content-Type: application/json
+
+{
+  "tujuan_program": "Revisi tujuan program",
+  "sasaran_program": "Revisi sasaran"
+}
+
+### Delete HOW
+DELETE http://localhost:5050/api/how/:id
+Authorization: Bearer {{TOKEN}}
+
+### Search HOW
+GET http://localhost:5050/api/how/search?q=pelatihan&page=1&limit=10
+Authorization: Bearer {{TOKEN}}
+
+### Dashboard Summary for HOW
+GET http://localhost:5050/api/how/dashboard?start=2024-01-01&end=2025-01-01
+Authorization: Bearer {{TOKEN}}
+
+---
+
+### ============================
+### DO ENDPOINTS
+### ============================
+
+### Get All DOs (With Pagination)
+GET http://localhost:5050/api/do?page=1&limit=10
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9wZEBiYW5qYXIuY29tIiwicm9sZSI6ImFkbWluIiwiaWQiOiI2ODUwOWQ0MGZkMmM4NjAwNzIwODhiM2IiLCJpYXQiOjE3NTAxMTM2MDMsImV4cCI6MTc1MDExNzIwM30.bHpo-8S9CqXE2DAJL7K98a32kQj77w7jHMfJvnlFtos
+
+### Get All DOs with Populated `nama_program`
+GET http://localhost:5050/api/do/amplifikasi?page=1&limit=10
+Authorization: Bearer {{TOKEN}}
+
+### Get DO by ID
+GET http://localhost:5050/api/do/:id
+Authorization: Bearer {{TOKEN}}
+
+### Create DO
+POST http://localhost:5050/api/do
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9wZEBiYW5qYXIuY29tIiwicm9sZSI6ImFkbWluIiwiaWQiOiI2ODUwOWQ0MGZkMmM4NjAwNzIwODhiM2IiLCJpYXQiOjE3NTAxMTM2MDMsImV4cCI6MTc1MDExNzIwM30.bHpo-8S9CqXE2DAJL7K98a32kQj77w7jHMfJvnlFtos
+Content-Type: application/json
+
+{
+  "nama_program": "684f3bf75e28d59debbee0c8",
+  "kolaborator": [
+    { "nama": "Budi", "peran": "Fasilitator" }
+  ],
+  "rincian_kegiatan": "Pelaksanaan pelatihan dasar komputer",
+  "capaian_output": "80 peserta lulus",
+  "dokumentasi_kegiatan": "https://example.com/foto1.jpg",
+  "kendala": "Cuaca buruk",
+  "rekomendasi": "Pindahkan ke lokasi indoor"
+}
+
+### Update DO
+PUT http://localhost:5050/api/do/6850ad96fd2c860072088b7e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9wZEBiYW5qYXIuY29tIiwicm9sZSI6ImFkbWluIiwiaWQiOiI2ODUwOWQ0MGZkMmM4NjAwNzIwODhiM2IiLCJpYXQiOjE3NTAxMTM2MDMsImV4cCI6MTc1MDExNzIwM30.bHpo-8S9CqXE2DAJL7K98a32kQj77w7jHMfJvnlFtos
+Content-Type: application/json
+
+{
+  "kendala": "Update kendala teknis",
+  "rekomendasi": "Update rekomendasi"
+}
+
+### Delete DO
+DELETE http://localhost:5050/api/do/6850ad3efd2c860072088b74
+Authorization: Bearer {{TOKEN}}
+
+### Search DO
+GET http://localhost:5050/api/do/search?q=pelatihan&page=1&limit=10
+Authorization: Bearer {{TOKEN}}
+
+### Add Dokumentasi to DO
+POST http://localhost:5050/api/do/6850ad96fd2c860072088b7e/dokumentasi
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9wZEBiYW5qYXIuY29tIiwicm9sZSI6ImFkbWluIiwiaWQiOiI2ODUwOWQ0MGZkMmM4NjAwNzIwODhiM2IiLCJpYXQiOjE3NTAxMTM2MDMsImV4cCI6MTc1MDExNzIwM30.bHpo-8S9CqXE2DAJL7K98a32kQj77w7jHMfJvnlFtos
+Content-Type: application/json
+
+{
+  "fileUrls": ["https://example.com/newfile1.jpg", "https://example.com/newfile2.jpg"]
+}
+
+### ============================
+### DATE DASHBOARD ENDPOINT
+### ============================
+
+### Summary Rekap Berdasarkan Rentang Tanggal (Semua data HOW + DO)
+GET http://localhost:5050/api/dashboard/summary?start=2024-01-01&end=2025-01-01
+Authorization: Bearer {{TOKEN}}
+
+### (Optional) Rekap Hanya HOW dalam rentang waktu
+GET http://localhost:5050/api/how/dashboard?start=2024-01-01&end=2025-01-01
+Authorization: Bearer {{TOKEN}}
+
+### (Optional) Rekap Hanya DO dalam rentang waktu
+GET http://localhost:5050/api/do/dashboard?start=2024-01-01&end=2025-01-01
+Authorization: Bearer {{TOKEN}}

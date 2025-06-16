@@ -269,12 +269,12 @@ GET http://localhost:5050/api/monitoring/performance
 
 
 ### Register User
-POST https://sia-api.nevmock.id/api/auth/register
+POST http://localhost:5050/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "<nama_opd>@banjar.com",
-  "password": "pass123",
+  "email": "opd@banjar.com",
+  "password": "password",
   "unit": "IT",
   "role": "admin"
 }
@@ -284,8 +284,8 @@ POST http://localhost:5050/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "user@example.com",
-  "password": "password123"
+  "email": "opd@banjar.com",
+  "password": "password"
 }
 
 ### Coba akses endpoint dengan token (ganti <TOKEN> dengan hasil login)
