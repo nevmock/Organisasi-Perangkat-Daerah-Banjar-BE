@@ -11,10 +11,14 @@ export class DateController {
             return;
         }
 
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+
         try {
-            const data = await this.service.getAllDate(userId);
+            const data = await this.service.getAllDate(userId, page, limit);
             res.json(data);
-        } catch {
+        } catch (err) {
+            console.error(err);
             res.status(500).json({ error: 'Failed to fetch dates' });
         }
     };
@@ -26,10 +30,14 @@ export class DateController {
             return;
         }
 
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+
         try {
-            const data = await this.service.getAllDateWithPopulate(userId);
+            const data = await this.service.getAllDateWithPopulate(userId, page, limit);
             res.json(data);
-        } catch {
+        } catch (err) {
+            console.error(err);
             res.status(500).json({ error: 'Failed to fetch dates with populate' });
         }
     };
@@ -44,7 +52,8 @@ export class DateController {
         try {
             const data = await this.service.getDate(req.params.id, userId);
             res.json(data);
-        } catch {
+        } catch (err) {
+            console.error(err);
             res.status(500).json({ error: 'Failed to fetch date' });
         }
     };
@@ -75,7 +84,8 @@ export class DateController {
         try {
             const data = await this.service.updateDate(req.params.id, req.body, userId);
             res.json(data);
-        } catch {
+        } catch (err) {
+            console.error(err);
             res.status(500).json({ error: 'Failed to update date' });
         }
     };
@@ -90,7 +100,8 @@ export class DateController {
         try {
             await this.service.deleteDate(req.params.id, userId);
             res.json({ message: 'Deleted' });
-        } catch {
+        } catch (err) {
+            console.error(err);
             res.status(500).json({ error: 'Failed to delete date' });
         }
     };
@@ -102,11 +113,15 @@ export class DateController {
             return;
         }
 
+        const q = (req.query.q as string) || '';
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+
         try {
-            const q = (req.query.q as string) || '';
-            const data = await this.service.searchDate(q, userId);
+            const data = await this.service.searchDate(q, userId, page, limit);
             res.json(data);
-        } catch {
+        } catch (err) {
+            console.error(err);
             res.status(500).json({ error: 'Failed to search dates' });
         }
     };

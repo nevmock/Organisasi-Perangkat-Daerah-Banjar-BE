@@ -3,16 +3,16 @@ import { DoRepository } from '../repositories/DoRepository';
 export class DoService {
     private repo = new DoRepository();
 
-    async getAllDo(userId: string) {
-        return this.repo.findAllByUser(userId);
+    async getAllDo(userId: string, page: number = 1, limit: number = 10) {
+        return this.repo.findAllByUser(userId, page, limit);
     }
 
-    async getAllDoWithPopulate(userId: string) {
-        return this.repo.findAllWithPopulateByUser(userId);
+    async getAllDoWithPopulate(userId: string, page: number = 1, limit: number = 10) {
+        return this.repo.findAllWithPopulateByUser(userId, page, limit);
     }
 
     async getDo(id: string, userId: string) {
-        return this.repo.findById(id, userId); // include createdBy check
+        return this.repo.findById(id, userId);
     }
 
     async createDoWithIndikators(data: any, userId: string) {
@@ -27,7 +27,12 @@ export class DoService {
         return this.repo.delete(id, userId);
     }
 
-    async searchDo(query: string, userId: string) {
-        return this.repo.search(query, userId);
+    async searchDo(query: string, userId: string, page: number = 1, limit: number = 10) {
+        return this.repo.search(query, userId, page, limit);
     }
+
+    async addDokumentasi(id: string, fileUrls: string[], userId: string) {
+        return this.repo.addDokumentasi(id, fileUrls, userId);
+    }
+
 }

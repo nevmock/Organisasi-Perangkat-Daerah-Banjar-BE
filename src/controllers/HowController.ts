@@ -11,8 +11,11 @@ export class HowController {
             return;
         }
 
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+
         try {
-            const data = await this.service.getAllHowByUser(userId);
+            const data = await this.service.getAllHowByUser(userId, page, limit);
             res.json(data);
         } catch {
             res.status(500).json({ error: 'Failed to fetch hows' });
@@ -26,8 +29,11 @@ export class HowController {
             return;
         }
 
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+
         try {
-            const data = await this.service.getAllHowWithPopulateByUser(userId);
+            const data = await this.service.getAllHowWithPopulateByUser(userId, page, limit);
             res.json(data);
         } catch {
             res.status(500).json({ error: 'Failed to fetch hows' });
@@ -102,9 +108,12 @@ export class HowController {
             return;
         }
 
+        const q = (req.query.q as string) || '';
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+
         try {
-            const q = (req.query.q as string) || '';
-            const data = await this.service.searchHow(q, userId);
+            const data = await this.service.searchHow(q, userId, page, limit);
             res.json(data);
         } catch {
             res.status(500).json({ error: 'Failed to search how' });
