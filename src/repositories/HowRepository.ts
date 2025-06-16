@@ -1,7 +1,16 @@
 import { HowModel } from '../models/HowModel';
 
 export class HowRepository {
-    async findAllByUser(userId: string, page = 1, limit = 10) {
+
+    async findAllByUser(userId: string, page = 1, limit = 10, withPagination = true) {
+        if (!withPagination) {
+            const data = await HowModel.find({ createdBy: userId }).sort({ createdAt: -1 });
+            return {
+                data,
+                total: data.length,
+            };
+        }
+
         const skip = (page - 1) * limit;
 
         const [data, total] = await Promise.all([

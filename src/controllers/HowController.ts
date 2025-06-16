@@ -8,21 +8,22 @@ export class HowController {
     getAll = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized' });
+            res.status(401).json({ error: 'Unauthorized: user ID not found' });
             return;
         }
 
         const page = parseInt(req.query.page as string) || 1;
         const limit = parseInt(req.query.limit as string) || 10;
+        const withPagination = req.query.all !== 'true'; // kalau ?all=true maka pagination dimatikan
 
         try {
-            const data = await this.service.getAllHowByUser(userId, page, limit);
+            const data = await this.service.getAllHowByUser(userId, page, limit, withPagination);
             res.json(data);
-        } catch (err) {
-            console.error(err);
+        } catch {
             res.status(500).json({ error: 'Failed to fetch hows' });
         }
     };
+
 
     getAllByAmplifikasi = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
