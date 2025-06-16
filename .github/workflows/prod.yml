@@ -44,5 +44,5 @@ jobs:
             docker run -d --name sia-banjar-prod \
               -e MONGO_URI=${{ secrets.PROD_MONGO_URI }} \
               -e PORT=${{ secrets.PROD_PORT }} \
-              -p ${{PROD_PORT}}:${{PROD_PORT}} \
+              -p ${{secrets.PROD_PORT}}:${{secrets.PROD_PORT}} \
               kevinirawand/sia-banjar-prod:latest
