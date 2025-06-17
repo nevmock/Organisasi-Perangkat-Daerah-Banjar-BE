@@ -130,12 +130,13 @@ export class DateController {
 
     addDokumentasi = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
+
         if (!userId) {
             res.status(401).json({ error: 'Unauthorized: user ID not found' });
             return;
         }
 
-        const { id } = req.params;
+        const dateId = req.params.id;
         const files = req.files as Express.Multer.File[];
 
         if (!files || files.length === 0) {
@@ -143,29 +144,25 @@ export class DateController {
             return;
         }
 
-        // Prepare file paths to delete if needed
-        const filePaths = files.map((file) =>
-            path.join('public/uploads/dokumentasi/', file.filename)
-        );
+        const fileUrls = files.map((file) => `/uploads/dokumentasi/${file.filename}`);
+        const filePaths = files.map((file) => path.join('public', 'uploads', 'dokumentasi', file.filename));
 
         try {
-            const data = await this.service.addDokumentasi(id, userId, files);
+            const updated = await this.service.addDokumentasi(dateId, fileUrls, userId);
 
-            if (!data) {
-                // Clean up uploaded files if operation fails (e.g. not found / unauthorized)
+            if (!updated) {
                 filePaths.forEach((filePath) => {
                     fs.unlink(filePath, (err) => {
                         if (err) console.error('Error deleting file:', filePath, err);
                     });
                 });
 
-                res.status(404).json({ error: 'Do not found or unauthorized' });
+                res.status(404).json({ error: 'Date not found or unauthorized' });
                 return;
             }
 
-            res.json(data);
+            res.status(200).json(updated);
         } catch (err) {
-            // Clean up files on any error
             filePaths.forEach((filePath) => {
                 fs.unlink(filePath, (err) => {
                     if (err) console.error('Error deleting file:', filePath, err);
@@ -173,7 +170,7 @@ export class DateController {
             });
 
             console.error(err);
-            res.status(500).json({ error: 'Failed to upload laporan files' });
+            res.status(500).json({ error: 'Failed to add laporan dokumentasi' });
         }
     };
 

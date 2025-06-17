@@ -118,17 +118,14 @@ export class DateRepository {
         };
     }
 
-    async uploadFile(id: string, userId: string, files: Express.Multer.File[]) {
-        const filePaths = files.map((file) => {
-            const filename = path.basename(file.path); // extract filename only
-            return `/uploads/dokumentasi/${filename}`;
-        });
+    async uploadFile(id: string, fileUrls: string[], userId: string) {
+        const dateItem = await DateModel.findOne({ _id: id, createdBy: userId });
+        if (!dateItem) return null;
 
-        return DateModel.findOneAndUpdate(
-            { _id: id, createdBy: userId },
-            { $push: { link_laporan_pdf: { $each: filePaths } } },
-            { new: true }
-        );
+        dateItem.link_laporan_pdf.push(...fileUrls);
+        await dateItem.save();
+
+        return dateItem;
     }
 
     async removeDokumentasi(dateId: string, userId: string, filename: string) {
