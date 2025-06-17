@@ -161,4 +161,31 @@ export class DoController {
             res.status(500).json({ error: 'Failed to add dokumentasi' });
         }
     };
+
+    deleteDokumentasi = async (req: Request, res: Response): Promise<void> => {
+        const userId = req.user?.id;
+        const { id } = req.params;
+        const filename = req.query.filename as string;
+
+        console.log(userId, filename);
+        
+        if (!userId || !filename) {
+            res.status(400).json({ error: 'User ID or filename missing' });
+            return;
+        }
+
+        try {
+            const result = await this.service.deleteDokumentasi(id, userId, filename);
+            if (!result) {
+                res.status(404).json({ error: 'Data not found or unauthorized' });
+                return;
+            }
+
+            res.json({ message: 'File deleted successfully' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Failed to delete file' });
+        }
+    };
+
 }
