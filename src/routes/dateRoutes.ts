@@ -1,6 +1,7 @@
 import express from 'express';
 import { DateController } from '../controllers/DateController';
 import { uploadDokumentasi } from '../middlewares/uploadMiddleware';
+import { handleMulterError } from '../utils/multerErrorHandler';
 
 const router = express.Router();
 const controller = new DateController();
@@ -14,7 +15,15 @@ router.post('/', controller.create);
 router.put('/:id', controller.update);
 router.delete('/:id', controller.delete);
 
-router.post('/:id/dokumentasi', uploadDokumentasi, controller.addDokumentasi);
+router.post('/:id/dokumentasi', (req, res, next) => {
+  uploadDokumentasi(req, res, (err) => {
+    if (err) {
+      return handleMulterError(err, req, res, next);
+    }
+    controller.addDokumentasi(req, res, next);
+  });
+});
+
 router.delete('/:id/dokumentasi', controller.deleteDokumentasi);
 
 export default router;
