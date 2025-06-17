@@ -1,4 +1,7 @@
+import path from 'path';
+import fs from 'fs';
 import { DoModel } from '../models/DoModel';
+import { stat, unlink } from 'fs/promises';
 
 export class DoRepository {
     async findAllByUser(userId: string, page = 1, limit = 10) {
@@ -56,7 +59,31 @@ export class DoRepository {
     }
 
     async delete(id: string, userId: string) {
-        return DoModel.findOneAndDelete({ _id: id, createdBy: userId });
+        const doItem = await DoModel.findOne({ _id: id, createdBy: userId });
+        if (!doItem) return false;
+
+        const dokumentasiPaths = doItem.dokumentasi_kegiatan || [];
+
+        for (const fileUrl of dokumentasiPaths) {
+        const fullPath = path.join('public', fileUrl);
+
+            try {
+                const fileStat = await stat(fullPath);
+                if (fileStat.isFile()) {
+                await unlink(fullPath);
+                console.log(`Deleted file: ${fullPath}`);
+                }
+            } catch (err: any) {
+                if (err.code === 'ENOENT') {
+                console.warn(`File not found, skipping: ${fullPath}`);
+                } else {
+                console.error(`Failed to delete file: ${fullPath}`, err);
+                }
+            }
+        }
+
+        await DoModel.deleteOne({ _id: id, createdBy: userId });
+        return true;
     }
 
     async search(query: string, userId: string, page = 1, limit = 10) {

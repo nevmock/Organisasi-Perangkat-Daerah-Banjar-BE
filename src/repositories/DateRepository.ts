@@ -1,5 +1,6 @@
 import path from 'path';
 import { DateModel } from '../models/DateModel';
+import { stat, unlink } from 'fs/promises';
 
 export class DateRepository {
     async findAllByUser(userId: string, page = 1, limit = 10) {
@@ -61,7 +62,31 @@ export class DateRepository {
     }
 
     async delete(id: string, userId: string) {
-        return DateModel.findOneAndDelete({ _id: id, createdBy: userId });
+        const dateItem = await DateModel.findOne({ _id: id, createdBy: userId });
+        if (!dateItem) return false;
+
+        const laporanPaths = dateItem.link_laporan_pdf || [];
+
+        for (const fileUrl of laporanPaths) {
+        const fullPath = path.join('public', fileUrl);
+
+            try {
+                const fileStat = await stat(fullPath);
+                if (fileStat.isFile()) {
+                await unlink(fullPath);
+                console.log(`Deleted file: ${fullPath}`);
+                }
+            } catch (err: any) {
+                if (err.code === 'ENOENT') {
+                console.warn(`File not found, skipping: ${fullPath}`);
+                } else {
+                console.error(`Failed to delete file: ${fullPath}`, err);
+                }
+            }
+        }
+
+        await DateModel.deleteOne({ _id: id, createdBy: userId });
+        return true;
     }
 
     async search(query: string, userId: string, page = 1, limit = 10) {
