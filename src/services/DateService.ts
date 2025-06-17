@@ -48,4 +48,16 @@ export class DateService {
 
         return true;
     }
+
+    async deleteDokumentasi(dateId: string, userId: string, filename: string) {
+        const filePath = await this.repo.removeDokumentasi(dateId, userId, filename);
+        if (!filePath) return null;
+
+        const fullPath = path.join('public', filePath);
+        fs.unlink(fullPath, err => {
+            if (err) console.error('Failed to delete file from disk:', fullPath);
+        });
+
+        return true;
+    }
 }
