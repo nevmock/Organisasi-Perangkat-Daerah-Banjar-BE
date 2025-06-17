@@ -9,7 +9,7 @@ export class DateController {
     getAll = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -21,14 +21,14 @@ export class DateController {
             res.json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Failed to fetch dates' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat menampilkan data tanggal' });
         }
     };
 
     getAllByAmplifikasi = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -40,14 +40,14 @@ export class DateController {
             res.json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Failed to fetch dates with populate' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data tanggal beserta detailnya' });
         }
     };
 
     getById = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -56,14 +56,14 @@ export class DateController {
             res.json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Failed to fetch date' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat menampilkan data tanggal' });
         }
     };
 
     create = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -72,14 +72,14 @@ export class DateController {
             res.status(201).json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Failed to create date' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat menyimpan data tanggal' });
         }
     };
 
     update = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -88,30 +88,30 @@ export class DateController {
             res.json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Failed to update date' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat memperbarui data tanggal' });
         }
     };
 
     delete = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
         try {
             await this.service.deleteDate(req.params.id, userId);
-            res.json({ message: 'Deleted' });
+            res.json({ message: 'Data Berhasil dihapus' });
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Failed to delete date' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat menghapus data tanggal' });
         }
     };
 
     search = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -124,7 +124,7 @@ export class DateController {
             res.json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Failed to search dates' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat mencari data tanggal' });
         }
     };
 
@@ -132,7 +132,7 @@ export class DateController {
         const userId = req.user?.id;
 
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -140,7 +140,7 @@ export class DateController {
         const files = req.files as Express.Multer.File[];
 
         if (!files || files.length === 0) {
-            res.status(400).json({ error: 'No files uploaded' });
+            res.status(400).json({ error: 'Silakan unggah berkas terlebih dahulu' });
             return;
         }
 
@@ -157,7 +157,7 @@ export class DateController {
                     });
                 });
 
-                res.status(404).json({ error: 'Date not found or unauthorized' });
+                res.status(404).json({ error: 'Data tidak ditemukan atau Anda tidak memiliki izin untuk mengaksesnya' });
                 return;
             }
 
@@ -170,7 +170,7 @@ export class DateController {
             });
 
             console.error(err);
-            res.status(500).json({ error: 'Failed to add laporan dokumentasi' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengunggah laporan' });
         }
     };
 
@@ -180,21 +180,21 @@ export class DateController {
         const filename = req.query.filename as string;
 
         if (!userId || !filename) {
-            res.status(400).json({ error: 'User ID or filename missing' });
+            res.status(400).json({ error: 'Data pengguna atau nama file tidak tersedia' });
             return;
         }
 
         try {
             const result = await this.service.deleteDokumentasi(id, userId, filename);
             if (!result) {
-                res.status(404).json({ error: 'Data not found or unauthorized' });
+                res.status(404).json({ error: 'Data tidak ditemukan atau Anda tidak memiliki izin untuk mengaksesnya' });
                 return;
             }
 
-            res.json({ message: 'File deleted successfully' });
+            res.json({ message: 'Berkas berhasil dihapus' });
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Failed to delete file' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat menghapus laporan' });
         }
     }
 }

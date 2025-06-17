@@ -8,28 +8,30 @@ export function handleMulterError(
   next: NextFunction
 ) {
   if (err instanceof multer.MulterError) {
-    let message = 'Unexpected file field encountered during upload.';
+    let message = 'Terjadi kesalahan saat mengunggah berkas.';
+
     switch (err.code) {
     case 'LIMIT_FILE_SIZE':
-        message = 'File size is too large. The uploaded file exceeds the maximum allowed size.';
+        message = 'Ukuran berkas terlalu besar. Silakan unggah berkas dengan ukuran yang sesuai.';
         break;
     case 'LIMIT_FILE_COUNT':
-        message = 'Too many files uploaded. The number of uploaded files exceeds the allowed limit.';
+        message = 'Terlalu banyak berkas diunggah. Silakan unggah sesuai jumlah yang diperbolehkan.';
         break;
     case 'LIMIT_UNEXPECTED_FILE':
-        message = 'Unexpected file field received. Please check the file field names in your upload form and ensure they match the expected fields.';
+        message = 'Berkas tidak dikenali. Silakan periksa kembali nama field pada formulir unggahan Anda.';
         break;
     default:
         message = err.message || message;
         break;
     }
-    return res.status(400).json({
-      message
-    });
-  } else if (err) {
+
+    return res.status(400).json({ message });
+
+    } else if (err) {
     return res.status(500).json({
-      message: 'An internal server error occurred during file upload.'
+        message: 'Terjadi kesalahan pada server saat mengunggah berkas. Silakan coba lagi nanti.'
     });
-  }
-  next();
+    }
+
+    next();
 }

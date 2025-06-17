@@ -10,7 +10,7 @@ export class DoController {
     getAll = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -21,14 +21,14 @@ export class DoController {
             const data = await this.service.getAllDo(userId, page, limit);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Failed to fetch dos' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data Do' });
         }
     };
 
     getAllByAmplifikasi = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -39,14 +39,14 @@ export class DoController {
             const data = await this.service.getAllDoWithPopulate(userId, page, limit);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Failed to fetch dos' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data Do' });
         }
     };
 
     getById = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -54,14 +54,14 @@ export class DoController {
             const data = await this.service.getDo(req.params.id, userId);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Failed to fetch do' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data Do' });
         }
     };
 
     create = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -70,14 +70,14 @@ export class DoController {
             res.status(201).json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Failed to create do populated' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat menyimpan data Do' });
         }
     };
 
     update = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -85,14 +85,14 @@ export class DoController {
             const data = await this.service.updateDo(req.params.id, req.body, userId);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Failed to update do' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat memperbarui data Do' });
         }
     };
 
     delete = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -100,14 +100,14 @@ export class DoController {
             await this.service.deleteDo(req.params.id, userId);
             res.json({ message: 'Deleted' });
         } catch {
-            res.status(500).json({ error: 'Failed to delete do' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat menghapus data Do' });
         }
     };
 
     search = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -119,14 +119,14 @@ export class DoController {
             const data = await this.service.searchDo(q, userId, page, limit);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Failed to search do' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat mencari data Do' });
         }
     };
 
     addDokumentasi = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -134,7 +134,7 @@ export class DoController {
         const files = req.files as Express.Multer.File[];
 
         if (!files || files.length === 0) {
-            res.status(400).json({ error: 'No files uploaded' });
+            res.status(400).json({ error: 'Silakan unggah berkas terlebih dahulu' });
             return;
         }
 
@@ -150,7 +150,7 @@ export class DoController {
                     });
                 });
 
-                res.status(404).json({ error: 'Do not found or unauthorized' });
+                res.status(404).json({ error: 'Data tidak ditemukan atau Anda tidak memiliki izin untuk mengaksesnya' });
                 return;
             }
 
@@ -163,7 +163,7 @@ export class DoController {
             });
 
             console.error(err);
-            res.status(500).json({ error: 'Failed to add dokumentasi' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengunggah dokumentasi' });
         }
     };
 
@@ -175,21 +175,21 @@ export class DoController {
         console.log(userId, filename);
         
         if (!userId || !filename) {
-            res.status(400).json({ error: 'User ID or filename missing' });
+            res.status(400).json({ error: 'Data pengguna atau nama file tidak tersedia' });
             return;
         }
 
         try {
             const result = await this.service.deleteDokumentasi(id, userId, filename);
             if (!result) {
-                res.status(404).json({ error: 'Data not found or unauthorized' });
+                res.status(404).json({ error: 'Data tidak ditemukan atau Anda tidak memiliki izin untuk mengaksesnya' });
                 return;
             }
 
-            res.json({ message: 'File deleted successfully' });
+            res.json({ message: 'Berkas berhasil dihapus' });
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Failed to delete file' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat menghapus laporan' });
         }
     };
 
