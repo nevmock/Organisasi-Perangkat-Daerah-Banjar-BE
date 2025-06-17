@@ -1,6 +1,8 @@
 import path from 'path';
 import { DateModel } from '../models/DateModel';
 import { stat, unlink } from 'fs/promises';
+import { Types } from 'mongoose';
+import { PipelineStage } from 'mongoose';
 
 export class DateRepository {
     async findAllByUser(userId: string, page = 1, limit = 10) {
@@ -91,23 +93,60 @@ export class DateRepository {
 
     async search(query: string, userId: string, page = 1, limit = 10) {
         const skip = (page - 1) * limit;
+        const objectIdUser = new Types.ObjectId(userId);
 
-        const filter = {
-            createdBy: userId,
-            $or: [
-                { status_laporan: { $regex: query, $options: 'i' } },
-                { link_laporan_pdf: { $elemMatch: { $regex: query, $options: 'i' } } },
-            ],
+        const baseMatch: PipelineStage.Match = {
+            $match: {
+                createdBy: objectIdUser,
+            }
         };
 
-        const [data, total] = await Promise.all([
-            DateModel.find(filter)
-                .populate('nama_program')
-                .sort({ createdAt: -1 })
-                .skip(skip)
-                .limit(limit),
-            DateModel.countDocuments(filter),
+        const lookupAndUnwind: PipelineStage[] = [
+            {
+                $lookup: {
+                    from: 'hows',
+                    localField: 'nama_program',
+                    foreignField: '_id',
+                    as: 'nama_program',
+                }
+            },
+            {
+                $unwind: '$nama_program',
+            }
+        ];
+
+        const searchMatch: PipelineStage.Match = {
+            $match: {
+                'nama_program.nama_program': { $regex: query, $options: 'i' },
+            }
+        };
+
+        const paginationStages: PipelineStage[] = [
+            { $sort: { createdAt: -1 } },
+            { $skip: skip },
+            { $limit: limit }
+        ];
+
+        const pipeline: PipelineStage[] = [
+            baseMatch,
+            ...lookupAndUnwind,
+            searchMatch,
+            ...paginationStages
+        ];
+
+        const countPipeline: PipelineStage[] = [
+            baseMatch,
+            ...lookupAndUnwind,
+            searchMatch,
+            { $count: 'total' }
+        ];
+
+        const [data, countResult] = await Promise.all([
+            DateModel.aggregate(pipeline),
+            DateModel.aggregate(countPipeline),
         ]);
+
+        const total = countResult[0]?.total || 0;
 
         return {
             data,
