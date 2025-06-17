@@ -10,7 +10,7 @@ export class IndikatorController {
             const data = await this.service.getAllIndikators();
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Failed to fetch indikator' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data indikator' });
         }
     };
 
@@ -19,7 +19,7 @@ export class IndikatorController {
             const data = await this.service.getIndikator(req.params.id);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Failed to fetch indikator' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data indikator' });
         }
     };
 
@@ -28,7 +28,7 @@ export class IndikatorController {
             const data = await this.service.createIndikator(req.body);
             res.status(201).json(data);
         } catch {
-            res.status(500).json({ error: 'Failed to create indikator' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat menyimpan data indikator' });
         }
     };
 
@@ -37,7 +37,7 @@ export class IndikatorController {
             const data = await this.service.updateIndikator(req.params.id, req.body);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Failed to update indikator' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat memperbarui data indikator' });
         }
     };
 
@@ -46,7 +46,7 @@ export class IndikatorController {
             await this.service.deleteIndikator(req.params.id);
             res.json({ message: 'Deleted' });
         } catch {
-            res.status(500).json({ error: 'Failed to delete indikator' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat menghapus data indikator' });
         }
     };
 
@@ -67,7 +67,7 @@ export class IndikatorController {
             res.json(updated);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Failed to upload evidence' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengunggah evidence' });
         }
     };
 
@@ -81,7 +81,7 @@ export class IndikatorController {
             const result = await this.service.removeEvidence(id, url);
             res.json(result);
         } catch (err) {
-            res.status(500).json({ error: 'Gagal menghapus evidence' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat menghapus evidence' });
         }
     };
 
@@ -91,7 +91,7 @@ export class IndikatorController {
             const data = await this.service.searchIndikator(q);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Failed to search indikator' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat mencari data indikator' });
         }
     };
 }
