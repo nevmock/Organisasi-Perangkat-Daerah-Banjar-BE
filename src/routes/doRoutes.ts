@@ -15,5 +15,6 @@ router.put('/:id', controller.update);
 router.delete('/:id', controller.delete);
 
 router.post('/:id/dokumentasi', uploadDokumentasi, controller.addDokumentasi);
+router.delete('/:id/dokumentasi', controller.deleteDokumentasi);
 
 export default router;

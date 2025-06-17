@@ -106,4 +106,15 @@ export class DoRepository {
         return doItem;
     }
 
+    async removeDokumentasi(doId: string, userId: string, filename: string) {
+        const filePath = `/uploads/dokumentasi/${filename}`;
+        const doItem = await DoModel.findOne({ _id: doId, createdBy: userId });
+        if (!doItem) return null;
+
+        doItem.dokumentasi_kegiatan = doItem.dokumentasi_kegiatan.filter(path => path !== filePath);
+        await doItem.save();
+
+        return filePath;
+    }
+
 }
