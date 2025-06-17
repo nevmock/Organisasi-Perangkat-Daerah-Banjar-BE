@@ -33,8 +33,8 @@ export class DateService {
         return this.repo.search(query, userId, page, limit);
     }
 
-    async addDokumentasi(id: string, userId: string, files: Express.Multer.File[]) {
-        return this.repo.uploadFile(id, userId, files);
+    async addDokumentasi(id: string, fileUrls: string[], userId: string) {
+        return this.repo.uploadFile(id, fileUrls, userId);
     }
 
     async deleteDokumentasi(dateId: string, userId: string, filename: string) {
