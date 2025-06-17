@@ -1,3 +1,4 @@
+import path from 'path';
 import { DateModel } from '../models/DateModel';
 
 export class DateRepository {
@@ -93,7 +94,10 @@ export class DateRepository {
     }
 
     async uploadFile(id: string, userId: string, files: Express.Multer.File[]) {
-        const filePaths = files.map((file) => file.path); // atau bisa disesuaikan ke URL publik
+        const filePaths = files.map((file) => {
+            const filename = path.basename(file.path); // extract filename only
+            return `/uploads/dokumentasi/${filename}`;
+        });
 
         return DateModel.findOneAndUpdate(
             { _id: id, createdBy: userId },
@@ -101,4 +105,16 @@ export class DateRepository {
             { new: true }
         );
     }
+
+    async removeDokumentasi(dateId: string, userId: string, filename: string) {
+        const filePath = `/uploads/dokumentasi/${filename}`;
+        const dateItem = await DateModel.findOne({ _id: dateId, createdBy: userId });
+        if (!dateItem) return null;
+
+        dateItem.link_laporan_pdf = dateItem.link_laporan_pdf.filter(path => path !== filePath);
+        await dateItem.save();
+
+        return filePath;
+    }
+
 }

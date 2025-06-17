@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { DateService } from '../services/DateService';
+import path from 'path';
+import fs from 'fs';
 
 export class DateController {
     private service = new DateService();
@@ -141,12 +143,61 @@ export class DateController {
             return;
         }
 
+        // Prepare file paths to delete if needed
+        const filePaths = files.map((file) =>
+            path.join('public/uploads/dokumentasi/', file.filename)
+        );
+
         try {
             const data = await this.service.addDokumentasi(id, userId, files);
+
+            if (!data) {
+                // Clean up uploaded files if operation fails (e.g. not found / unauthorized)
+                filePaths.forEach((filePath) => {
+                    fs.unlink(filePath, (err) => {
+                        if (err) console.error('Error deleting file:', filePath, err);
+                    });
+                });
+
+                res.status(404).json({ error: 'Do not found or unauthorized' });
+                return;
+            }
+
             res.json(data);
         } catch (err) {
+            // Clean up files on any error
+            filePaths.forEach((filePath) => {
+                fs.unlink(filePath, (err) => {
+                    if (err) console.error('Error deleting file:', filePath, err);
+                });
+            });
+
             console.error(err);
             res.status(500).json({ error: 'Failed to upload laporan files' });
         }
     };
+
+    deleteDokumentasi = async (req: Request, res: Response): Promise<void> => {
+        const userId = req.user?.id;
+        const { id } = req.params;
+        const filename = req.query.filename as string;
+
+        if (!userId || !filename) {
+            res.status(400).json({ error: 'User ID or filename missing' });
+            return;
+        }
+
+        try {
+            const result = await this.service.deleteDokumentasi(id, userId, filename);
+            if (!result) {
+                res.status(404).json({ error: 'Data not found or unauthorized' });
+                return;
+            }
+
+            res.json({ message: 'File deleted successfully' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Failed to delete file' });
+        }
+    }
 }
