@@ -1,3 +1,6 @@
+import fs from 'fs';
+import path from 'path';
+
 import { Request, Response } from 'express';
 import { DoService } from '../services/DoService';
 
@@ -128,21 +131,34 @@ export class DoController {
         }
 
         const doId = req.params.id;
-        const fileUrls = (req.files as Express.Multer.File[]).map(
-            (file) => `/uploads/dokumentasi/${file.filename}`
-        );
+        const files = req.files as Express.Multer.File[];
+
+        const fileUrls = files.map((file) => `/uploads/dokumentasi/${file.filename}`);
+        const filePaths = files.map((file) => path.join('public/uploads/dokumentasi/', file.filename));
 
         try {
             const updated = await this.service.addDokumentasi(doId, fileUrls, userId);
             if (!updated) {
+                filePaths.forEach((filePath) => {
+                    fs.unlink(filePath, (err) => {
+                        if (err) console.error('Error deleting file:', filePath, err);
+                    });
+                });
+
                 res.status(404).json({ error: 'Do not found or unauthorized' });
                 return;
             }
+
             res.status(200).json(updated);
         } catch (err) {
+            filePaths.forEach((filePath) => {
+                fs.unlink(filePath, (err) => {
+                    if (err) console.error('Error deleting file:', filePath, err);
+                });
+            });
+
             console.error(err);
             res.status(500).json({ error: 'Failed to add dokumentasi' });
         }
     };
-
 }
