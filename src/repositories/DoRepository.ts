@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import { DoModel } from '../models/DoModel';
 import { stat, unlink } from 'fs/promises';
+import mongoose, { PipelineStage, Types } from 'mongoose';
 
 export class DoRepository {
     async findAllByUser(userId: string, page = 1, limit = 10) {
@@ -88,32 +89,81 @@ export class DoRepository {
 
     async search(query: string, userId: string, page = 1, limit = 10) {
         const skip = (page - 1) * limit;
+        const objectIdUser = new Types.ObjectId(userId);
 
-        const filter = {
-            createdBy: userId,
-            $or: [
-                { rincian_kegiatan: { $regex: query, $options: 'i' } },
-                { capaian_output: { $regex: query, $options: 'i' } },
-                { dokumentasi_kegiatan: { $regex: query, $options: 'i' } },
-                { kendala: { $regex: query, $options: 'i' } },
-                { rekomendasi: { $regex: query, $options: 'i' } },
-                {
-                    kolaborator: {
-                        $elemMatch: {
-                            $or: [
-                                { nama: { $regex: query, $options: 'i' } },
-                                { peran: { $regex: query, $options: 'i' } },
-                            ]
-                        }
-                    }
-                }
-            ]
-        };
+        // Pipeline stages
+        const pipeline: PipelineStage[] = [
+            {
+                $match: {
+                    createdBy: objectIdUser,
+                },
+            },
+            {
+                $lookup: {
+                    from: 'hows', // collection name of HowModel
+                    localField: 'nama_program',
+                    foreignField: '_id',
+                    as: 'nama_program',
+                },
+            },
+            {
+                $unwind: '$nama_program',
+            },
+            {
+                $match: {
+                    $or: [
+                        { 'nama_program.nama_program': { $regex: query, $options: 'i' } },
+                        { 'kolaborator.nama': { $regex: query, $options: 'i' } },
+                    ],
+                },
+            },
+            {
+                $sort: { createdAt: -1 },
+            },
+            {
+                $skip: skip,
+            },
+            {
+                $limit: limit,
+            },
+        ];
 
-        const [data, total] = await Promise.all([
-            DoModel.find(filter).populate('nama_program').skip(skip).limit(limit).sort({ createdAt: -1 }),
-            DoModel.countDocuments(filter),
+        const countPipeline: PipelineStage[] = [
+            {
+                $match: {
+                    createdBy: objectIdUser,
+                },
+            },
+            {
+                $lookup: {
+                    from: 'hows',
+                    localField: 'nama_program',
+                    foreignField: '_id',
+                    as: 'nama_program',
+                },
+            },
+            {
+                $unwind: '$nama_program',
+            },
+            {
+                $match: {
+                    $or: [
+                        { 'nama_program.nama_program': { $regex: query, $options: 'i' } },
+                        { 'kolaborator.nama': { $regex: query, $options: 'i' } },
+                    ],
+                },
+            },
+            {
+                $count: 'total',
+            },
+        ];
+
+        const [data, countResult] = await Promise.all([
+            DoModel.aggregate(pipeline),
+            DoModel.aggregate(countPipeline),
         ]);
+
+        const total = countResult[0]?.total || 0;
 
         return {
             data,
