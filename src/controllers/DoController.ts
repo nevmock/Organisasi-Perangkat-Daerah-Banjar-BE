@@ -133,6 +133,11 @@ export class DoController {
         const doId = req.params.id;
         const files = req.files as Express.Multer.File[];
 
+        if (!files || files.length === 0) {
+            res.status(400).json({ error: 'No files uploaded' });
+            return;
+        }
+
         const fileUrls = files.map((file) => `/uploads/dokumentasi/${file.filename}`);
         const filePaths = files.map((file) => path.join('public/uploads/dokumentasi/', file.filename));
 
