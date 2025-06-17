@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { HowService } from '../services/HowService';
+import { HowDashboardService } from '../services/HowDashboardService';
 
 export class HowController {
     private service = new HowService();
@@ -7,25 +8,27 @@ export class HowController {
     getAll = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali: user ID not found' });
             return;
         }
 
         const page = parseInt(req.query.page as string) || 1;
         const limit = parseInt(req.query.limit as string) || 10;
+        const withPagination = req.query.all !== 'true'; // kalau ?all=true maka pagination dimatikan
 
         try {
-            const data = await this.service.getAllHowByUser(userId, page, limit);
+            const data = await this.service.getAllHowByUser(userId, page, limit, withPagination);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Failed to fetch hows' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data How' });
         }
     };
+
 
     getAllByAmplifikasi = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -35,30 +38,32 @@ export class HowController {
         try {
             const data = await this.service.getAllHowWithPopulateByUser(userId, page, limit);
             res.json(data);
-        } catch {
-            res.status(500).json({ error: 'Failed to fetch hows' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data How' });
         }
     };
 
     getById = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
         try {
             const data = await this.service.getHow(req.params.id, userId);
             res.json(data);
-        } catch {
-            res.status(500).json({ error: 'Failed to fetch how' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data How' });
         }
     };
 
     create = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -67,44 +72,46 @@ export class HowController {
             res.status(201).json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Failed to create how populated' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat menyimpan data How' });
         }
     };
 
     update = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
         try {
             const data = await this.service.updateHow(req.params.id, req.body, userId);
             res.json(data);
-        } catch {
-            res.status(500).json({ error: 'Failed to update how' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengubah data How' });
         }
     };
 
     delete = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
         try {
             await this.service.deleteHow(req.params.id, userId);
-            res.json({ message: 'Deleted' });
-        } catch {
-            res.status(500).json({ error: 'Failed to delete how' });
+            res.json({ message: 'Data Berhasil dihapus' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Terjadi kesalahan saat menghapus data How' });
         }
     };
 
     search = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Unauthorized: user ID not found' });
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -115,8 +122,30 @@ export class HowController {
         try {
             const data = await this.service.searchHow(q, userId, page, limit);
             res.json(data);
-        } catch {
-            res.status(500).json({ error: 'Failed to search how' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Terjadi kesalahan saat mencari data How' });
+        }
+    };
+
+    dashboardSummary = async (req: Request, res: Response): Promise<void> => {
+        const userId = req.user?.id;
+        if (!userId) {
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+            return;
+        }
+
+        try {
+            const { start, end } = req.query;
+
+            const startDate = start ? new Date(start as string) : new Date('2000-01-01');
+            const endDate = end ? new Date(end as string) : new Date();
+
+            const data = await HowDashboardService.getSummary(userId, startDate, endDate);
+            res.json(data);
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil ringkasan' });
         }
     };
 }

@@ -3,8 +3,8 @@ import { HowRepository } from '../repositories/HowRepository';
 export class HowService {
     private repo = new HowRepository();
 
-    async getAllHowByUser(userId: string, page: number, limit: number) {
-        return this.repo.findAllByUser(userId, page, limit);
+    async getAllHowByUser(userId: string, page: number, limit: number, withPagination = true) {
+        return this.repo.findAllByUser(userId, page, limit, withPagination);
     }
 
     async getAllHowWithPopulateByUser(userId: string, page: number, limit: number) {

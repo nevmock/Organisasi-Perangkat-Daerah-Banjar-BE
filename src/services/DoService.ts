@@ -1,3 +1,5 @@
+import path from 'path';
+import fs from 'fs';
 import { DoRepository } from '../repositories/DoRepository';
 
 export class DoService {
@@ -35,4 +37,15 @@ export class DoService {
         return this.repo.addDokumentasi(id, fileUrls, userId);
     }
 
+    async deleteDokumentasi(doId: string, userId: string, filename: string) {
+        const filePath = await this.repo.removeDokumentasi(doId, userId, filename);
+        if (!filePath) return null;
+
+        const fullPath = path.join('public', filePath);
+        fs.unlink(fullPath, err => {
+            if (err) console.error('Failed to delete file from disk:', fullPath);
+        });
+
+        return true;
+    }
 }

@@ -10,7 +10,7 @@ export class AmplifikasiController {
             const data = await this.service.getAllAmplifikasis();
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Failed to fetch Amplifikasi' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data Amplifikasi' });
         }
     };
 
@@ -19,7 +19,7 @@ export class AmplifikasiController {
             const data = await this.service.getAmplifikasi(req.params.id);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Failed to fetch Amplifikasi' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data Amplifikasi' });
         }
     };
 
@@ -28,16 +28,16 @@ export class AmplifikasiController {
             const data = await this.service.updateAmplifikasi(req.params.id, req.body);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Failed to update Amplifikasi' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat memperbarui data Amplifikasi' });
         }
     };    
 
     delete = async (req: Request, res: Response) => {
         try {
             await this.service.deleteAmplifikasi(req.params.id);
-            res.json({ message: 'Deleted' });
+            res.json({ message: 'Data berhasil dihapus' });
         } catch {
-            res.status(500).json({ error: 'Failed to delete Amplifikasi' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat menghapus data Amplifikasi' });
         }
     };
 
@@ -58,7 +58,7 @@ export class AmplifikasiController {
             res.json(updated);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Failed to upload evidence' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengunggah bukti' });
         }
     };
 
@@ -79,7 +79,7 @@ export class AmplifikasiController {
             res.json(updated);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Failed to upload thumbnail' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengunggah thumbnail' });
         }
     };    
 
@@ -93,7 +93,7 @@ export class AmplifikasiController {
             const result = await this.service.removeEvidence(id, url);
             res.json(result);
         } catch (err) {
-            res.status(500).json({ error: 'Gagal menghapus evidence' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat menghapus evidence' });
         }
     };
 
@@ -103,7 +103,7 @@ export class AmplifikasiController {
             const data = await this.service.searchAmplifikasi(q);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Failed to search Amplifikasi' });
+            res.status(500).json({ error: 'Terjadi kesalahan saat mencari data Amplifikasi' });
         }
     };
 }

@@ -1,3 +1,5 @@
+import path from 'path';
+import fs from 'fs';
 import { DateRepository } from '../repositories/DateRepository';
 
 export class DateService {
@@ -29,5 +31,21 @@ export class DateService {
 
     async searchDate(query: string, userId: string, page = 1, limit = 10) {
         return this.repo.search(query, userId, page, limit);
+    }
+
+    async addDokumentasi(id: string, fileUrls: string[], userId: string) {
+        return this.repo.uploadFile(id, fileUrls, userId);
+    }
+
+    async deleteDokumentasi(dateId: string, userId: string, filename: string) {
+        const filePath = await this.repo.removeDokumentasi(dateId, userId, filename);
+        if (!filePath) return null;
+
+        const fullPath = path.join('public', filePath);
+        fs.unlink(fullPath, err => {
+            if (err) console.error('Failed to delete file from disk:', fullPath);
+        });
+
+        return true;
     }
 }
