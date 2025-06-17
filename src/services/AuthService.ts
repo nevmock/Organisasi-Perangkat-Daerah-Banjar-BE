@@ -27,6 +27,6 @@ export class AuthService {
     private generateToken(user: any): string {
         const payload = { email: user.email, role: user.role, id: user._id };
         const secret = process.env.JWT_SECRET || 'your_jwt_secret';
-        return sign(payload, secret, { expiresIn: '1h' });
+        return sign(payload, secret, { expiresIn: '24h' });
     }
 }
