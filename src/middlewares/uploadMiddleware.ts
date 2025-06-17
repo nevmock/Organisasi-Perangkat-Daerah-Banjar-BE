@@ -38,8 +38,11 @@ const fileFilter = (
 const upload = multer({
     storage,
     fileFilter,
-    limits: { fileSize: 10 * 1024 * 1024 }, // max 10 MB
+    limits: {
+        fileSize: 5 * 1024 * 1024, // 5 MB
+        files: 3,
+    }
 });
 
-// Upload multiple (maks 10 file, key: 'files')
-export const uploadDokumentasi = upload.array('files', 10);
+// Export upload array dengan limit file 3
+export const uploadDokumentasi = upload.array('files', 3);

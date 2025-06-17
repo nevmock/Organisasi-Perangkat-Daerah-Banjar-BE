@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { DoService } from '../services/DoService';
 
 export class DoController {
@@ -123,7 +123,7 @@ export class DoController {
         }
     };
 
-    addDokumentasi = async (req: Request, res: Response): Promise<void> => {
+    addDokumentasi = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
             res.status(401).json({ error: 'Unauthorized: user ID not found' });

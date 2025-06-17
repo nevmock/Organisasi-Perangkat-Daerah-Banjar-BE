@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { DateService } from '../services/DateService';
 import path from 'path';
 import fs from 'fs';
@@ -128,7 +128,7 @@ export class DateController {
         }
     };
 
-    addDokumentasi = async (req: Request, res: Response): Promise<void> => {
+    addDokumentasi = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         const userId = req.user?.id;
 
         if (!userId) {
