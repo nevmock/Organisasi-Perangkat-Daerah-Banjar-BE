@@ -31,12 +31,11 @@ jobs:
         run: docker push kevinirawand/sia-banjar-prod:latest
 
       - name: Deploy to Server
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
+          host: 103.150.116.30
+          username: digivise
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             docker pull kevinirawand/sia-banjar-prod:latest
             docker stop sia-banjar-prod || true
