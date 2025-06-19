@@ -36,7 +36,6 @@ jobs:
           host: 103.150.116.30
           username: digivise
           password: digivise
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             docker pull kevinirawand/sia-banjar-prod:latest
             docker stop sia-banjar-prod || true
