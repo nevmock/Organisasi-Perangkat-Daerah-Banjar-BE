@@ -31,7 +31,7 @@ jobs:
         run: docker push kevinirawand/sia-banjar-prod:latest
 
       - name: Deploy to Server
-        uses: appleboy/ssh-action@v2
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
