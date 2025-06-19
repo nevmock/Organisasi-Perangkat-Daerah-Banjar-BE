@@ -36,7 +36,6 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             docker pull kevinirawand/sia-banjar-prod:latest
             docker stop sia-banjar-prod || true
