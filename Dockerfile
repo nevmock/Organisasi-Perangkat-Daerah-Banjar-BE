@@ -1,21 +1,15 @@
-# Gunakan image Node.js resmi versi LTS
 FROM node:20-alpine
 
-# Set working directory
+ARG APP_PORT=3018
+
 WORKDIR /app
 
-# Salin file dependency terlebih dahulu untuk cache layer
 COPY package*.json ./
 
-# Install dependencies
 RUN npm install
-# Jika untuk development, gunakan: RUN npm install
 
-# Salin seluruh source code ke dalam container
 COPY . .
 
-# Buka port (ubah jika aplikasimu menggunakan port lain)
-EXPOSE 3018
+EXPOSE ${APP_PORT}
 
-# Perintah untuk menjalankan server Express
 CMD ["npm", "run", "dev"]
