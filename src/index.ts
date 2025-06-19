@@ -41,7 +41,7 @@ app.use('/api/do', doRoutes);
 app.use('/api/date', dateRoutes);
 
 app.get('/', (_, res) => {
-    res.send('API siap jalan 🛠️');
+    res.send('API siap jalan bro 🛠️');
 });
 
 app.listen(PORT, () => {
