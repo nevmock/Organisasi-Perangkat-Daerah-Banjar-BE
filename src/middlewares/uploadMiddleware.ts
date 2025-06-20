@@ -8,11 +8,14 @@ const uploadPath = path.join(__dirname, '..', '..', 'public', 'uploads', 'dokume
 // Konfigurasi storage
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
+        console.log(`Destination triggered for file: ${file.originalname}`);
         fs.mkdirSync(uploadPath, { recursive: true });
         cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        const finalName = `${uniqueSuffix}${path.extname(file.originalname)}`;
+        console.log(`Saving file as: ${finalName}`);
         cb(null, uniqueSuffix + path.extname(file.originalname));
     }
 });
@@ -28,8 +31,10 @@ const fileFilter = (
     const mimetype = allowedTypes.test(file.mimetype.toLowerCase());
 
     if (extname && mimetype) {
+        console.log(`File accepted: ${file.originalname}`);
         cb(null, true);
     } else {
+        console.log(`File rejected: ${file.originalname}`);
         cb(new Error('Hanya file gambar (jpg, jpeg, png) dan PDF yang diizinkan!'));
     }
 };
