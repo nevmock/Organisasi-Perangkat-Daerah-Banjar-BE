@@ -13,6 +13,7 @@ import authRoutes from './routes/authRoutes';
 import howRoutes from "./routes/howRoutes";
 import doRoutes from "./routes/doRoutes";
 import dateRoutes from "./routes/dateRoutes";
+import userRoutes from "./routes/userRoutes";
 
 dotenv.config();
 const app = express();
@@ -46,6 +47,7 @@ app.use('/api/monitoring', monitoringRoutes);
 app.use('/api/how', howRoutes);
 app.use('/api/do', doRoutes);
 app.use('/api/date', dateRoutes);
+app.use('/api/users', userRoutes)
 
 app.get('/', (_, res) => {
     res.send('API siap jalan bro 🛠️');

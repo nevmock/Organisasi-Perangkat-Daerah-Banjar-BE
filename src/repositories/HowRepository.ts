@@ -1,3 +1,6 @@
+import mongoose from 'mongoose';
+import { DateModel } from '../models/DateModel';
+import { DoModel } from '../models/DoModel';
 import { HowModel } from '../models/HowModel';
 
 export class HowRepository {
@@ -45,6 +48,26 @@ export class HowRepository {
             page,
             limit,
             totalPages: Math.ceil(total / limit),
+        };
+    }
+
+    async getDoDateDetailsByHowIdAdmin(howId: string) {
+        const howObjectId = new mongoose.Types.ObjectId(howId);
+
+        const how = await HowModel.findOne({ _id: howObjectId }).exec();
+        if (!how) return null;
+
+        const doDetails = await DoModel.find({ nama_program: howObjectId })
+            .populate({ path: 'nama_program', select: 'nama_program' })
+            .exec();
+        const dateDetails = await DateModel.find({ nama_program: howObjectId })
+            .populate({ path: 'nama_program', select: 'nama_program' })
+            .exec();
+
+        return {
+            how,
+            doDetails,
+            dateDetails
         };
     }
 

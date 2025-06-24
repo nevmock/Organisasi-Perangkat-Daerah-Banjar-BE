@@ -6,9 +6,13 @@ export class HowService {
     async getAllHowByUser(userId: string, page: number, limit: number, withPagination = true) {
         return this.repo.findAllByUser(userId, page, limit, withPagination);
     }
-
+    
     async getAllHowWithPopulateByUser(userId: string, page: number, limit: number) {
         return this.repo.findAllWithPopulateByUser(userId, page, limit);
+    }
+    
+    async getDoDateDetailsByHowIdAdmin(howId: string) {
+        return this.repo.getDoDateDetailsByHowIdAdmin(howId);
     }
 
     async getHow(id: string, userId: string) {

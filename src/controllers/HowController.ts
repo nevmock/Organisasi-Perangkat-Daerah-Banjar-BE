@@ -24,7 +24,6 @@ export class HowController {
         }
     };
 
-
     getAllByAmplifikasi = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
@@ -41,6 +40,48 @@ export class HowController {
         } catch (err) {
             console.error(err);
             res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data How' });
+        }
+    };
+
+    getAllByUserforSuperAdmin = async (req: Request, res: Response): Promise<void> => {
+        const userRole = req.user?.role;
+        if (userRole !== "superadmin") {
+            res.status(403).json({ error: 'Forbidden' });
+            return;
+        }
+
+        const userId = req.params.userId
+
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+
+        try {
+            const data = await this.service.getAllHowWithPopulateByUser(userId, page, limit);
+            res.json(data);
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data How' });
+        }
+    };
+
+    getDoDateDetailsByHowIdAdmin = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const userRole = req.user?.role;
+            if (userRole !== "superadmin") {
+                res.status(403).json({ error: 'Forbidden' });
+                return;
+            }
+            
+            const howId = req.params.howId;
+            const detail = await this.service.getDoDateDetailsByHowIdAdmin(howId);
+            if (!detail) {
+                res.status(404).json({ message: 'Data not found' });
+                return;
+            }
+            res.json(detail);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Error fetching detail', error });
         }
     };
 
