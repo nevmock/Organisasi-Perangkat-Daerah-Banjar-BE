@@ -43,7 +43,7 @@ jobs:
             docker run -d --name sia-api-dev \
               --network development_mongodb_net \
               --restart unless-stopped \
-              -e MONGO_URI=${{ secrets.PROD_MONGO_URI }} \
+              -e MONGO_URI=${{ secrets.DEV_MONGO_URI }} \
               -e PORT=${{ secrets.DEV_PORT }} \
               -p ${{secrets.DEV_PORT}}:${{secrets.DEV_PORT}} \
               kevinirawand/sia-api-dev:latest
