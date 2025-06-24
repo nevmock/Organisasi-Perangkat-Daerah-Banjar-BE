@@ -13,6 +13,9 @@ router.post('/', controller.create);
 router.put('/:id', controller.update);
 router.delete('/:id', controller.delete);
 
+router.get('/admin/:userId', controller.getAllByUserforSuperAdmin);
+router.get('/admin/doDateDetails/:howId', controller.getDoDateDetailsByHowIdAdmin);
+
 router.get('/dashboard/summary', controller.dashboardSummary); 
 
 export default router;
