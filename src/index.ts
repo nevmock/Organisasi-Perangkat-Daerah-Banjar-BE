@@ -35,7 +35,21 @@ app.use(cors())
 connectDB().then(() => null);
 
 app.use(express.json());
-app.use('/public', express.static('public'));
+app.use('/public', express.static('public', {
+    setHeaders: (res, path) => {
+        if (path.endsWith('.jpg') || path.endsWith('.jpeg')) {
+            res.set('Content-Type', 'image/jpeg');
+        } else if (path.endsWith('.png')) {
+            res.set('Content-Type', 'image/png');
+        } else if (path.endsWith('.webp')) {
+            res.set('Content-Type', 'image/webp');
+        } else if (path.endsWith('.svg')) {
+            res.set('Content-Type', 'image/svg+xml');
+        } else if (path.endsWith('.pdf')) {
+            res.set('Content-Type', 'application/pdf');
+        }
+    }
+}));
 
 app.use('/api/auth', authRoutes);
 app.use(authenticateToken);
