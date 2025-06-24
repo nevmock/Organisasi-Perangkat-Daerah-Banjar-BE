@@ -46,5 +46,5 @@ jobs:
               -e MONGO_URI=${{ secrets.DEV_MONGO_URI }} \
               -e PORT=${{ secrets.DEV_PORT }} \
               -p ${{secrets.DEV_PORT}}:${{secrets.DEV_PORT}} \
-              -v /home/dev/sia-api-public:/app/public \
+              -v /home/dev/sia-api-dev/public:/app/public \
               kevinirawand/sia-api-dev:latest
