@@ -73,7 +73,7 @@ export class DateController {
         } catch (error) {
             console.error(error);
 
-            if (error instanceof Error && error.message === 'Satu program How hanya boleh memiliki satu tanggal Date.') {
+            if (error instanceof Error && error.message === 'Program ini sudah memiliki tanggal. Setiap program hanya boleh memiliki satu tanggal. Silakan perbarui tanggal yang ada jika ingin mengubahnya.') {
                 res.status(400).json({ message: error.message });
                 return;
             }
