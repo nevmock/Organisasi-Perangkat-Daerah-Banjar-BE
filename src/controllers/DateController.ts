@@ -9,7 +9,7 @@ export class DateController {
     getAll = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+            res.status(401).json({ message: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -21,14 +21,14 @@ export class DateController {
             res.json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat menampilkan data tanggal' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat menampilkan data tanggal' });
         }
     };
 
     getAllByAmplifikasi = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+            res.status(401).json({ message: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -40,14 +40,14 @@ export class DateController {
             res.json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data tanggal beserta detailnya' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mengambil data tanggal beserta detailnya' });
         }
     };
 
     getById = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+            res.status(401).json({ message: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -56,14 +56,14 @@ export class DateController {
             res.json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat menampilkan data tanggal' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat menampilkan data tanggal' });
         }
     };
 
     create = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+            res.status(401).json({ message: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -85,7 +85,7 @@ export class DateController {
     update = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+            res.status(401).json({ message: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -94,14 +94,14 @@ export class DateController {
             res.json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat memperbarui data tanggal' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat memperbarui data tanggal' });
         }
     };
 
     delete = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+            res.status(401).json({ message: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -110,14 +110,14 @@ export class DateController {
             res.json({ message: 'Data Berhasil dihapus' });
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat menghapus data tanggal' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat menghapus data tanggal' });
         }
     };
 
     search = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+            res.status(401).json({ message: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -130,7 +130,7 @@ export class DateController {
             res.json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat mencari data tanggal' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mencari data tanggal' });
         }
     };
 
@@ -138,7 +138,7 @@ export class DateController {
         const userId = req.user?.id;
 
         if (!userId) {
-            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+            res.status(401).json({ message: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -146,7 +146,7 @@ export class DateController {
         const files = req.files as Express.Multer.File[];
 
         if (!files || files.length === 0) {
-            res.status(400).json({ error: 'Silakan unggah berkas terlebih dahulu' });
+            res.status(400).json({ message: 'Silakan unggah berkas terlebih dahulu' });
             return;
         }
 
@@ -163,7 +163,7 @@ export class DateController {
                     });
                 });
 
-                res.status(404).json({ error: 'Data tidak ditemukan atau Anda tidak memiliki izin untuk mengaksesnya' });
+                res.status(404).json({ message: 'Data tidak ditemukan atau Anda tidak memiliki izin untuk mengaksesnya' });
                 return;
             }
 
@@ -176,7 +176,7 @@ export class DateController {
             });
 
             console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat mengunggah laporan' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mengunggah laporan' });
         }
     };
 
@@ -186,21 +186,21 @@ export class DateController {
         const filename = req.query.filename as string;
 
         if (!userId || !filename) {
-            res.status(400).json({ error: 'Data pengguna atau nama file tidak tersedia' });
+            res.status(400).json({ message: 'Data pengguna atau nama file tidak tersedia' });
             return;
         }
 
         try {
             const result = await this.service.deleteDokumentasi(id, userId, filename);
             if (!result) {
-                res.status(404).json({ error: 'Data tidak ditemukan atau Anda tidak memiliki izin untuk mengaksesnya' });
+                res.status(404).json({ message: 'Data tidak ditemukan atau Anda tidak memiliki izin untuk mengaksesnya' });
                 return;
             }
 
             res.json({ message: 'Berkas berhasil dihapus' });
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat menghapus laporan' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat menghapus laporan' });
         }
     }
 }

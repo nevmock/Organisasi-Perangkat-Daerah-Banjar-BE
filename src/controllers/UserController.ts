@@ -23,9 +23,9 @@ export class UserController {
             console.error('Error in getUsersWithCounts:', error);
 
             res.status(500).json({
-            success: false,
-            message: 'Failed to fetch users and counts',
-            error: (error as Error).message || error,
+                success: false,
+                message: 'Failed to fetch users and counts',
+                error: (error as Error).message || error,
             });
         }
     };
