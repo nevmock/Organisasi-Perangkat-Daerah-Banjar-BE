@@ -70,9 +70,15 @@ export class DateController {
         try {
             const data = await this.service.createDate(req.body, userId);
             res.status(201).json(data);
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat menyimpan data tanggal' });
+        } catch (error) {
+            console.error(error);
+
+            if (error instanceof Error && error.message === 'Satu program How hanya boleh memiliki satu tanggal Date.') {
+                res.status(400).json({ message: error.message });
+                return;
+            }
+
+            res.status(500).json({ message: 'Terjadi kesalahan pada server.' });
         }
     };
 

@@ -211,4 +211,24 @@ export class HowController {
             res.status(500).json({ message: 'Terjadi kesalahan saat mengambil ringkasan' });
         }
     }
+
+    getUserSummary = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const user = req.user;
+            if (!user?.id || !user?.email) {
+                res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+                return;
+            }
+
+            const summary = await this.service.getSummaryByUser(user.id);
+            res.json({
+                email: user.email,
+                ...summary
+            });
+
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil ringkasan program' });
+        }
+    }
 }

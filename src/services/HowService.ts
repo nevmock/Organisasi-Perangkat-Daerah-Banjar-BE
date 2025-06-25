@@ -45,4 +45,19 @@ export class HowService {
             selesai: item.selesai
         }));
     }
+
+    async getSummaryByUser(userId: string) {
+        const result = await this.repo.getSummaryByUser(userId);
+        return result[0] || {
+            belum_mulai: 0,
+            progress: 0,
+            selesai: 0,
+            total: 0,
+            persentase: {
+                belum_mulai: 0,
+                progress: 0,
+                selesai: 0
+            }
+        };
+    }
 }
