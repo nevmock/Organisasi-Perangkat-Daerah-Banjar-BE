@@ -20,7 +20,7 @@ export class DateService {
     async createDate(data: any, userId: string) {
         const existingDate = await this.repo.findByHowId(data.nama_program, userId);
         if (existingDate) {
-            throw new Error('Satu program How hanya boleh memiliki satu tanggal Date.');
+            throw new Error('Program ini sudah memiliki tanggal. Setiap program hanya boleh memiliki satu tanggal. Silakan perbarui tanggal yang ada jika ingin mengubahnya.');
         }
         return this.repo.create(data, userId);
     }
