@@ -10,7 +10,7 @@ export class AmplifikasiController {
             const data = await this.service.getAllAmplifikasis();
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data Amplifikasi' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mengambil data Amplifikasi' });
         }
     };
 
@@ -19,7 +19,7 @@ export class AmplifikasiController {
             const data = await this.service.getAmplifikasi(req.params.id);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data Amplifikasi' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mengambil data Amplifikasi' });
         }
     };
 
@@ -28,7 +28,7 @@ export class AmplifikasiController {
             const data = await this.service.updateAmplifikasi(req.params.id, req.body);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Terjadi kesalahan saat memperbarui data Amplifikasi' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat memperbarui data Amplifikasi' });
         }
     };    
 
@@ -37,7 +37,7 @@ export class AmplifikasiController {
             await this.service.deleteAmplifikasi(req.params.id);
             res.json({ message: 'Data berhasil dihapus' });
         } catch {
-            res.status(500).json({ error: 'Terjadi kesalahan saat menghapus data Amplifikasi' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat menghapus data Amplifikasi' });
         }
     };
 
@@ -47,7 +47,7 @@ export class AmplifikasiController {
             const files = req.files as Express.Multer.File[];
 
             if (!files || files.length === 0) {
-                res.status(400).json({ error: 'File evidence wajib diisi' });
+                res.status(400).json({ message: 'File evidence wajib diisi' });
                 return;
             }
 
@@ -58,7 +58,7 @@ export class AmplifikasiController {
             res.json(updated);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat mengunggah bukti' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mengunggah bukti' });
         }
     };
 
@@ -68,7 +68,7 @@ export class AmplifikasiController {
             const files = req.files as Express.Multer.File[];
     
             if (!files || files.length === 0) {
-                res.status(400).json({ error: 'File thumbnail wajib diisi' });
+                res.status(400).json({ message: 'File thumbnail wajib diisi' });
                 return;
             }
     
@@ -79,7 +79,7 @@ export class AmplifikasiController {
             res.json(updated);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat mengunggah thumbnail' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mengunggah thumbnail' });
         }
     };    
 
@@ -88,12 +88,12 @@ export class AmplifikasiController {
             const { id } = req.params;
             const { url } = req.body;
 
-            if (!url) return res.status(400).json({ error: 'Evidence URL harus disediakan' });
+            if (!url) return res.status(400).json({ message: 'Evidence URL harus disediakan' });
 
             const result = await this.service.removeEvidence(id, url);
             res.json(result);
         } catch (err) {
-            res.status(500).json({ error: 'Terjadi kesalahan saat menghapus evidence' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat menghapus evidence' });
         }
     };
 
@@ -103,7 +103,7 @@ export class AmplifikasiController {
             const data = await this.service.searchAmplifikasi(q);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Terjadi kesalahan saat mencari data Amplifikasi' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mencari data Amplifikasi' });
         }
     };
 }

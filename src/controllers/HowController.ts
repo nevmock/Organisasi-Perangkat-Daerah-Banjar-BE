@@ -8,7 +8,7 @@ export class HowController {
     getAll = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali: user ID not found' });
+            res.status(401).json({ message: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali: user ID not found' });
             return;
         }
 
@@ -20,14 +20,14 @@ export class HowController {
             const data = await this.service.getAllHowByUser(userId, page, limit, withPagination);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data How' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mengambil data How' });
         }
     };
 
     getAllByAmplifikasi = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+            res.status(401).json({ message: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -39,14 +39,14 @@ export class HowController {
             res.json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data How' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mengambil data How' });
         }
     };
 
     getAllByUserforSuperAdmin = async (req: Request, res: Response): Promise<void> => {
         const userRole = req.user?.role;
         if (userRole !== "superadmin") {
-            res.status(403).json({ error: 'Forbidden' });
+            res.status(403).json({ message: 'Forbidden' });
             return;
         }
 
@@ -60,7 +60,7 @@ export class HowController {
             res.json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data How' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mengambil data How' });
         }
     };
 
@@ -68,7 +68,7 @@ export class HowController {
         try {
             const userRole = req.user?.role;
             if (userRole !== "superadmin") {
-                res.status(403).json({ error: 'Forbidden' });
+                res.status(403).json({ message: 'Forbidden' });
                 return;
             }
             
@@ -88,7 +88,7 @@ export class HowController {
     getById = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+            res.status(401).json({ message: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -97,14 +97,14 @@ export class HowController {
             res.json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data How' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mengambil data How' });
         }
     };
 
     create = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+            res.status(401).json({ message: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -113,14 +113,14 @@ export class HowController {
             res.status(201).json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat menyimpan data How' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat menyimpan data How' });
         }
     };
 
     update = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+            res.status(401).json({ message: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -129,14 +129,14 @@ export class HowController {
             res.json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat mengubah data How' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mengubah data How' });
         }
     };
 
     delete = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+            res.status(401).json({ message: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -145,14 +145,14 @@ export class HowController {
             res.json({ message: 'Data Berhasil dihapus' });
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat menghapus data How' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat menghapus data How' });
         }
     };
 
     search = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+            res.status(401).json({ message: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -165,14 +165,14 @@ export class HowController {
             res.json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat mencari data How' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mencari data How' });
         }
     };
 
     dashboardSummary = async (req: Request, res: Response): Promise<void> => {
         const userId = req.user?.id;
         if (!userId) {
-            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+            res.status(401).json({ message: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
         }
 
@@ -186,7 +186,7 @@ export class HowController {
             res.json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil ringkasan' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mengambil ringkasan' });
         }
     };
 
@@ -195,12 +195,12 @@ export class HowController {
             const user = req.user;
 
             if (!user?.id) {
-            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+            res.status(401).json({ message: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
             return;
             }
 
             if (user.role !== 'superadmin') {
-            res.status(403).json({ error: 'Anda tidak memiliki izin untuk mengakses resource ini' });
+            res.status(403).json({ message: 'Anda tidak memiliki izin untuk mengakses resource ini' });
             return;
             }
 
@@ -216,7 +216,7 @@ export class HowController {
         try {
             const user = req.user;
             if (!user?.id || !user?.email) {
-                res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+                res.status(401).json({ message: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
                 return;
             }
 
@@ -228,7 +228,7 @@ export class HowController {
 
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil ringkasan program' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mengambil ringkasan program' });
         }
     }
 }

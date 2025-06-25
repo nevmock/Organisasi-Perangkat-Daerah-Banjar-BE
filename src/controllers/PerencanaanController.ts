@@ -9,7 +9,7 @@ export class PerencanaanController {
             const data = await this.service.getAllPerencanaans();
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data perencanaan' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mengambil data perencanaan' });
         }
     };
 
@@ -18,7 +18,7 @@ export class PerencanaanController {
             const data = await this.service.getAllPerencanaanByAmplifikasi();
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data perencanaan' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mengambil data perencanaan' });
         }
     };
 
@@ -27,7 +27,7 @@ export class PerencanaanController {
             const data = await this.service.getPerencanaan(req.params.id);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data perencanaan' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mengambil data perencanaan' });
         }
     };
 
@@ -37,7 +37,7 @@ export class PerencanaanController {
             res.status(201).json(data);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Terjadi kesalahan saat menyimpan data perencanaan beserta indikator' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat menyimpan data perencanaan beserta indikator' });
         }
     };
 
@@ -46,7 +46,7 @@ export class PerencanaanController {
             const data = await this.service.updatePerencanaan(req.params.id, req.body);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Terjadi kesalahan saat memperbarui data perencanaan' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat memperbarui data perencanaan' });
         }
     };
 
@@ -55,7 +55,7 @@ export class PerencanaanController {
             await this.service.deletePerencanaan(req.params.id);
             res.json({ message: 'Deleted' });
         } catch {
-            res.status(500).json({ error: 'Terjadi kesalahan saat menghapus data perencanaan' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat menghapus data perencanaan' });
         }
     };
 
@@ -65,7 +65,7 @@ export class PerencanaanController {
             const data = await this.service.searchPerencanaan(q);
             res.json(data);
         } catch {
-            res.status(500).json({ error: 'Terjadi kesalahan saat mencari data perencanaan' });
+            res.status(500).json({ message: 'Terjadi kesalahan saat mencari data perencanaan' });
         }
     };
 }
