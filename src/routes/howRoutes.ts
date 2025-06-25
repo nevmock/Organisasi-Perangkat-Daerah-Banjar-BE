@@ -17,5 +17,6 @@ router.get('/admin/:userId', controller.getAllByUserforSuperAdmin);
 router.get('/admin/doDateDetails/:howId', controller.getDoDateDetailsByHowIdAdmin);
 
 router.get('/dashboard/summary', controller.dashboardSummary); 
+router.get('/dashboard/programSummary', controller.getProgramSummary);
 
 export default router;
