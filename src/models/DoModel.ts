@@ -15,7 +15,8 @@ const doSchema = new mongoose.Schema({
     capaian_output: { type: String, required: true },
     dokumentasi_kegiatan: [{ type: String }],
     kendala: { type: String },
-    rekomendasi: { type: String }
+    rekomendasi: { type: String },
+    status: { type: Boolean, default: false }
 }, { timestamps: true });
 
 export const DoModel = mongoose.model('Do', doSchema);

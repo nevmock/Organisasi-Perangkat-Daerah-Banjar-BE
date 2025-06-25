@@ -18,6 +18,10 @@ export class DateService {
     }
 
     async createDate(data: any, userId: string) {
+        const existingDate = await this.repo.findByHowId(data.nama_program, userId);
+        if (existingDate) {
+            throw new Error('Satu program How hanya boleh memiliki satu tanggal Date.');
+        }
         return this.repo.create(data, userId);
     }
 
@@ -35,18 +39,6 @@ export class DateService {
 
     async addDokumentasi(id: string, fileUrls: string[], userId: string) {
         return this.repo.uploadFile(id, fileUrls, userId);
-    }
-
-    async deleteDokumentasi(dateId: string, userId: string, filename: string) {
-        const filePath = await this.repo.removeDokumentasi(dateId, userId, filename);
-        if (!filePath) return null;
-
-        const fullPath = path.join('public', filePath);
-        fs.unlink(fullPath, err => {
-            if (err) console.error('Failed to delete file from disk:', fullPath);
-        });
-
-        return true;
     }
 
     async deleteDokumentasi(dateId: string, userId: string, filename: string) {

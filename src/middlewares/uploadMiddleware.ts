@@ -35,7 +35,9 @@ const fileFilter = (
         cb(null, true);
     } else {
         console.log(`File rejected: ${file.originalname}`);
-        cb(new Error('Hanya file gambar (jpg, jpeg, png) dan PDF yang diizinkan!'));
+        const error: any = new Error('Hanya file gambar (jpg, jpeg, png) dan PDF yang diizinkan!');
+        error.name = 'MulterFileFilterError';
+        cb(error);
     }
 };
 

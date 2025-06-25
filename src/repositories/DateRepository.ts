@@ -51,6 +51,11 @@ export class DateRepository {
             .populate('nama_program');
     }
 
+    async findByHowId(howId: string, userId: string) {
+        return DateModel.findOne({ nama_program: howId, createdBy: userId });
+    }
+
+
     async create(data: any, userId: string) {
         return DateModel.create({ ...data, createdBy: userId });
     }

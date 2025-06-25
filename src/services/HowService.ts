@@ -34,4 +34,15 @@ export class HowService {
     async searchHow(query: string, userId: string, page: number, limit: number) {
         return this.repo.search(query, userId, page, limit);
     }
+
+    async getProgramSummary() {
+        const data = await this.repo.getProgramSummary();
+
+        return data.map(item => ({
+            email: item.email,
+            belum_mulai: item.belum_mulai,
+            progress: item.progress,
+            selesai: item.selesai
+        }));
+    }
 }

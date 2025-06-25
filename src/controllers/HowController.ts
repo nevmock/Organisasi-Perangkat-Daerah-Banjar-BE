@@ -189,4 +189,26 @@ export class HowController {
             res.status(500).json({ error: 'Terjadi kesalahan saat mengambil ringkasan' });
         }
     };
+
+    getProgramSummary = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const user = req.user;
+
+            if (!user?.id) {
+            res.status(401).json({ error: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+            return;
+            }
+
+            if (user.role !== 'superadmin') {
+            res.status(403).json({ error: 'Anda tidak memiliki izin untuk mengakses resource ini' });
+            return;
+            }
+
+            const result = await this.service.getProgramSummary();
+            res.json({ data: result });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Terjadi kesalahan saat mengambil ringkasan' });
+        }
+    }
 }
