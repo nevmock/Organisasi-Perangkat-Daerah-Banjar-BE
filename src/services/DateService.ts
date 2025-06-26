@@ -26,7 +26,7 @@ export class DateService {
     }
 
     async updateDate(id: string, data: any, userId: string) {
-        const existing = await this.repo.findByHowId(data.nama_program, userId);
+        const existing = await this.repo.findById(id, userId);
         if (!existing) {
             throw new Error('Data tanggal tidak ditemukan');
         }
