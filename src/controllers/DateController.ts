@@ -94,6 +94,18 @@ export class DateController {
             res.json(data);
         } catch (err) {
             console.error(err);
+            const message = err instanceof Error ? err.message : 'Terjadi kesalahan saat memperbarui data tanggal';
+
+            if (message === 'Program ini sudah memiliki tanggal. Setiap program (How) hanya boleh memiliki satu tanggal.') {
+                res.status(400).json({ message });
+                return;
+            }
+
+            if (message === 'Data tanggal tidak ditemukan') {
+                res.status(404).json({ message });
+                return;
+            }
+
             res.status(500).json({ message: 'Terjadi kesalahan saat memperbarui data tanggal' });
         }
     };
