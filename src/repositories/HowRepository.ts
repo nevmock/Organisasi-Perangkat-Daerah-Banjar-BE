@@ -223,7 +223,6 @@ export class HowRepository {
         ]);
     }
 
-
     async getSummaryByUser(userId: string) {
         return HowModel.aggregate([
             {
@@ -381,5 +380,72 @@ export class HowRepository {
                 }
             }
         ]);
+    }
+
+    async getProgramProgressSummaryByUser(userId: string, page = 1, limit = 10) {
+        const skip = (page - 1) * limit;
+
+        const data = await HowModel.aggregate([
+            {
+                $match: {
+                    createdBy: new mongoose.Types.ObjectId(userId)
+                }
+            },
+            {
+                $lookup: {
+                    from: 'dos',
+                    localField: '_id',
+                    foreignField: 'nama_program',
+                    as: 'do_list'
+                }
+            },
+            {
+                $addFields: {
+                jumlah_do: { $size: '$do_list' },
+                jumlah_do_selesai: {
+                    $size: {
+                        $filter: {
+                            input: '$do_list',
+                            as: 'doItem',
+                            cond: { $eq: [ { $ifNull: ['$$doItem.status', false] }, true ] }
+                        }
+                    }
+                }
+                }
+            },
+            {
+                $project: {
+                _id: 0,
+                nama_program: 1,
+                jumlah_do: 1,
+                progress: {
+                    $cond: [
+                    { $eq: ['$jumlah_do', 0] },
+                    0,
+                    {
+                        $floor: {
+                            $multiply: [
+                                { $divide: ['$jumlah_do_selesai', '$jumlah_do'] },
+                                100
+                            ]
+                        }
+                    }
+                    ]
+                }
+                }
+            },
+            { $skip: skip },
+            { $limit: limit }
+        ]);
+
+        const total = await HowModel.countDocuments({ createdBy: new mongoose.Types.ObjectId(userId) });
+
+        return {
+            data,
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit)
+        };
     }
 }

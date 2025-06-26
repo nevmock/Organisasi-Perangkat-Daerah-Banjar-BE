@@ -231,4 +231,24 @@ export class HowController {
             res.status(500).json({ message: 'Terjadi kesalahan saat mengambil ringkasan program' });
         }
     }
+
+    getProgramProgressSummaryByUser = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const userId = req.user?.id;
+            if (!userId) {
+                res.status(401).json({ message: 'Sesi Anda tidak valid atau telah berakhir. Silakan login kembali' });
+                return;
+            }
+
+            const page = parseInt(req.query.page as string) || 1;
+            const limit = parseInt(req.query.limit as string) || 10;
+
+            const result = await this.service.getProgramProgressSummaryByUser(userId, page, limit);
+
+            res.json(result);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Terjadi kesalahan saat mengambil ringkasan progres.' });
+        }
+    };
 }

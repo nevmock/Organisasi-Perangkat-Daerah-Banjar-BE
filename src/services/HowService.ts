@@ -60,4 +60,8 @@ export class HowService {
             }
         };
     }
+
+    async getProgramProgressSummaryByUser(userId: string, page: number, limit: number) {
+        return this.repo.getProgramProgressSummaryByUser(userId, page, limit);
+    }
 }

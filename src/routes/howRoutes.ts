@@ -14,6 +14,7 @@ router.put('/:id', controller.update);
 router.delete('/:id', controller.delete);
 
 router.get('/summary', controller.getUserSummary);
+router.get('/progressSummary', controller.getProgramProgressSummaryByUser);
 
 router.get('/admin/:userId', controller.getAllByUserforSuperAdmin);
 router.get('/admin/doDateDetails/:howId', controller.getDoDateDetailsByHowIdAdmin);
