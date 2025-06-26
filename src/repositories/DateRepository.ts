@@ -55,6 +55,9 @@ export class DateRepository {
         return DateModel.findOne({ nama_program: howId, createdBy: userId });
     }
 
+    async findOne(filter: any) {
+        return DateModel.findOne(filter);
+    }
 
     async create(data: any, userId: string) {
         return DateModel.create({ ...data, createdBy: userId });

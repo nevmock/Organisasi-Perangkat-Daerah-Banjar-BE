@@ -26,6 +26,21 @@ export class DateService {
     }
 
     async updateDate(id: string, data: any, userId: string) {
+        const existing = await this.repo.findByHowId(data.nama_program, userId);
+        if (!existing) {
+            throw new Error('Data tanggal tidak ditemukan');
+        }
+
+        const duplicate = await this.repo.findOne({
+            _id: { $ne: id },
+            nama_program: data.nama_program ?? existing.nama_program,
+            createdBy: userId
+        });
+
+        if (duplicate) {
+            throw new Error('Program ini sudah memiliki tanggal. Setiap program (How) hanya boleh memiliki satu tanggal.');
+        }
+
         return this.repo.update(id, data, userId);
     }
 
