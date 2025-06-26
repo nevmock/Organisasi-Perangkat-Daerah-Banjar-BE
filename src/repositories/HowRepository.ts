@@ -216,9 +216,10 @@ export class HowRepository {
             {
                 $sort: {
                     selesai: -1,
+                    progress: -1,
+                    belum_mulai: -1,
                     email: 1
                 }
-
             }
         ]);
     }
@@ -432,6 +433,12 @@ export class HowRepository {
                     }
                     ]
                 }
+                }
+            },
+            {
+                $sort: {
+                    progress: -1,
+                    jumlah_do: -1
                 }
             },
             { $skip: skip },
