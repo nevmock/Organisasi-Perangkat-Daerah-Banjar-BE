@@ -25,8 +25,14 @@ class AuthController {
             const token = await this.authService.login(email, password);
             return res.status(200).json({ token });
         } catch (error) {
-            const message = error instanceof Error ? error.message : 'An error occurred';
-            return res.status(401).json({ message });
+            const message = error instanceof Error ? error.message : 'Terjadi kesalahan';
+
+            if (message === 'Email atau password salah') {
+                return res.status(400).json({ message });
+            }
+
+            console.error(error);
+            return res.status(500).json({ message: 'Terjadi kesalahan pada server' });
         }
     }
 }
