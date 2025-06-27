@@ -54,7 +54,7 @@ jobs:
               -e PORT=3000 \
               -e MONGO_URI="${{ secrets.MONGO_URI }}" \
               -p "${{secrets.PORT}}":3000 \
-              -v sia-api-dev:/app/public \
+              -v /home/dev/sia-api-dev/public:/app/public \
               nevmock/sia-api-dev:latest
             
             echo "🧹 Cleaning up unused Docker resources..."
