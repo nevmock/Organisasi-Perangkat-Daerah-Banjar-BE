@@ -8,27 +8,28 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: Development
 
     steps:
-      - name: Checkout Code
+      - name: 📦 Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Node
+      - name: 🧰 Setup Node.js v20
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Install dependencies
+      - name: 📥 Install Dependencies
         run: npm install
 
-      - name: Docker Login
+      - name: 🐳 Docker Login
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build Docker Image
-        run: docker build-t kevinirawand/sia-api-dev:latest .
+        run: docker build -t nevmock/sia-api-dev:latest .
 
       - name: Push Docker Image
-        run: docker push kevinirawand/sia-api-dev:latest
+        run: docker push nevmock/sia-api-dev:latest
 
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
@@ -37,14 +38,21 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker pull kevinirawand/sia-api-dev:latest
+            echo "🔁 Pulling latest Docker image..."
+            docker pull nevmock/sia-api-dev:latest
+
+            echo "🛑 Stopping and removing existing container..."
             docker stop sia-api-dev || true
             docker rm sia-api-dev || true
-            docker run -d --name sia-api-dev \
-              --network development_mongodb_net \
+
+            echo "🚀 Starting new container..."
+            docker run -d \
+              --name sia-api-dev \
               --restart unless-stopped \
+              --network development_mongodb_net \
+              -e NODE_ENV=development \
               -e PORT=5000 \
               -e MONGO_URI="${{ secrets.DEV_MONGO_URI }}" \
               -p "${{secrets.DEV_PORT}}":5000 \
-              -v /home/dev/sia-api-dev/public:/app/public \
-              kevinirawand/sia-api-dev:latest
+              -v sia-api-dev:/app/public \
+              nevmock/sia-api-dev:latest
