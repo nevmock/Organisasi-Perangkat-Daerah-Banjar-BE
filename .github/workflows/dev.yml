@@ -8,6 +8,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: Development
 
     steps:
       - name: 📦 Checkout Code
@@ -50,9 +51,9 @@ jobs:
               --restart unless-stopped \
               --network development_mongodb_net \
               -e NODE_ENV=development \
-              -e PORT=5000 \
-              -e MONGO_URI="${{ secrets.DEV_MONGO_URI }}" \
-              -p "${{secrets.DEV_PORT}}":5000 \
+              -e PORT=3000 \
+              -e MONGO_URI="${{ secrets.MONGO_URI }}" \
+              -p "${{secrets.PORT}}":3000 \
               -v sia-api-dev:/app/public \
               nevmock/sia-api-dev:latest
             
