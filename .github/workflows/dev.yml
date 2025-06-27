@@ -8,7 +8,6 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment: Development
 
     steps:
       - name: 📦 Checkout Code
@@ -56,3 +55,6 @@ jobs:
               -p "${{secrets.DEV_PORT}}":5000 \
               -v sia-api-dev:/app/public \
               nevmock/sia-api-dev:latest
+            
+            echo "🧹 Cleaning up unused Docker resources..."
+            docker system prune -f
