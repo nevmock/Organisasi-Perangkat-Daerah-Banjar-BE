@@ -25,7 +25,7 @@ jobs:
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build Docker Image
-        run: docker build --build-arg APP_PORT=${{ secrets.DEV_PORT }} -t kevinirawand/sia-api-dev:latest .
+        run: docker build-t kevinirawand/sia-api-dev:latest .
 
       - name: Push Docker Image
         run: docker push kevinirawand/sia-api-dev:latest
@@ -43,9 +43,8 @@ jobs:
             docker run -d --name sia-api-dev \
               --network development_mongodb_net \
               --restart unless-stopped \
-              -e NODE_ENV=development \
               -e PORT=5000 \
-              -e MONGO_URI=${{ secrets.DEV_MONGO_URI }} \
-              -p ${{secrets.DEV_PORT}}:5000 \
+              -e MONGO_URI="${{ secrets.DEV_MONGO_URI }}" \
+              -p "${{secrets.DEV_PORT}}":5000 \
               -v /home/dev/sia-api-dev/public:/app/public \
               kevinirawand/sia-api-dev:latest
