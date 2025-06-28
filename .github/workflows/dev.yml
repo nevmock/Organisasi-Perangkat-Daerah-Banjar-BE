@@ -1,61 +1,61 @@
-name: CI/CD Development
+# name: CI/CD Development
 
-on:
-  push:
-    branches:
-      - dev
+# on:
+#   push:
+#     branches:
+#       - dev
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    environment: Development
+# jobs:
+#   build-and-deploy:
+#     runs-on: ubuntu-latest
+#     environment: Development
 
-    steps:
-      - name: 📦 Checkout Code
-        uses: actions/checkout@v4
+#     steps:
+#       - name: 📦 Checkout Code
+#         uses: actions/checkout@v4
 
-      - name: 🧰 Setup Node.js v20
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+#       - name: 🧰 Setup Node.js v20
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: 20
 
-      - name: 📥 Install Dependencies
-        run: npm install
+#       - name: 📥 Install Dependencies
+#         run: npm install
 
-      - name: 🐳 Docker Login
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+#       - name: 🐳 Docker Login
+#         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: Build Docker Image
-        run: docker build -t nevmock/sia-api-dev:latest .
+#       - name: Build Docker Image
+#         run: docker build -t nevmock/sia-api-dev:latest .
 
-      - name: Push Docker Image
-        run: docker push nevmock/sia-api-dev:latest
+#       - name: Push Docker Image
+#         run: docker push nevmock/sia-api-dev:latest
 
-      - name: Deploy to Server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            echo "🔁 Pulling latest Docker image..."
-            docker pull nevmock/sia-api-dev:latest
+#       - name: Deploy to Server
+#         uses: appleboy/ssh-action@master
+#         with:
+#           host: ${{ secrets.HOST }}
+#           username: ${{ secrets.USERNAME }}
+#           key: ${{ secrets.SSH_PRIVATE_KEY }}
+#           script: |
+#             echo "🔁 Pulling latest Docker image..."
+#             docker pull nevmock/sia-api-dev:latest
 
-            echo "🛑 Stopping and removing existing container..."
-            docker stop sia-api-dev || true
-            docker rm sia-api-dev || true
+#             echo "🛑 Stopping and removing existing container..."
+#             docker stop sia-api-dev || true
+#             docker rm sia-api-dev || true
 
-            echo "🚀 Starting new container..."
-            docker run -d \
-              --name sia-api-dev \
-              --restart unless-stopped \
-              --network development_mongodb_net \
-              -e NODE_ENV=development \
-              -e PORT=3000 \
-              -e MONGO_URI="${{ secrets.MONGO_URI }}" \
-              -p "${{secrets.PORT}}":3000 \
-              -v /home/dev/sia-api-dev/public:/app/public \
-              nevmock/sia-api-dev:latest
+#             echo "🚀 Starting new container..."
+#             docker run -d \
+#               --name sia-api-dev \
+#               --restart unless-stopped \
+#               --network development_mongodb_net \
+#               -e NODE_ENV=development \
+#               -e PORT=3000 \
+#               -e MONGO_URI="${{ secrets.MONGO_URI }}" \
+#               -p "${{secrets.PORT}}":3000 \
+#               -v /home/dev/sia-api-dev/public:/app/public \
+#               nevmock/sia-api-dev:latest
             
-            echo "🧹 Cleaning up unused Docker resources..."
-            docker system prune -f
+#             echo "🧹 Cleaning up unused Docker resources..."
+#             docker system prune -f

@@ -1,0 +1,61 @@
+name: CI/CD Staging
+
+on:
+  push:
+    branches:
+      - stg
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: Staging
+
+    steps:
+      - name: 📦 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🧰 Setup Node.js v20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 📥 Install Dependencies
+        run: npm install
+
+      - name: 🐳 Docker Login
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build Docker Image
+        run: docker build -t nevmock/sia-api-stag:latest .
+
+      - name: Push Docker Image
+        run: docker push nevmock/sia-api-stag:latest
+
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "🔁 Pulling latest Docker image..."
+            docker pull nevmock/sia-api-stag:latest
+
+            echo "🛑 Stopping and removing existing container..."
+            docker stop sia-api-stag || true
+            docker rm sia-api-stag || true
+
+            echo "🚀 Starting new container..."
+            docker run -d \
+              --name sia-api-stag \
+              --restart unless-stopped \
+              --network staging_mongodb_stag_network \
+              -e NODE_ENV=development \
+              -e PORT=3000 \
+              -e MONGO_URI="${{ secrets.MONGO_URI }}" \
+              -p "${{secrets.PORT}}":3000 \
+              -v ~/sia-api-stag/public:/app/public \
+              nevmock/sia-api-stag:latest
+            
+            echo "🧹 Cleaning up unused Docker resources..."
+            docker system prune -f
