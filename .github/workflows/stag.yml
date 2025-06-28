@@ -57,5 +57,6 @@ jobs:
               -v ~/sia-api-stag/public:/app/public \
               nevmock/sia-api-stag:latest
             
+          
             echo "🧹 Cleaning up unused Docker resources..."
             docker system prune -f
