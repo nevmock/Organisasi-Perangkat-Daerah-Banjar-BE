@@ -1,3 +1,5 @@
+import { DateModel } from '../models/DateModel';
+import { DoModel } from '../models/DoModel';
 import { HowRepository } from '../repositories/HowRepository';
 
 export class HowService {
@@ -28,6 +30,35 @@ export class HowService {
     }
 
     async deleteHow(id: string, userId: string) {
+        // Pastikan data How milik user
+        const how = await this.repo.findById(id, userId)
+        if (!how) {
+            throw new Error('Data How tidak ditemukan atau Anda tidak memiliki izin untuk menghapusnya.');
+        }
+
+        // Cek jumlah relasi Do dan Date
+        const doCount = await DoModel.countDocuments({ nama_program: id });
+        const dateCount = await DateModel.countDocuments({ nama_program: id });
+
+        let errorMessage = '';
+
+        if (doCount > 0) {
+            errorMessage += `Terdapat ${doCount} data Do yang terkait.\n`;
+        }
+
+        if (dateCount > 0) {
+            errorMessage += `Terdapat ${dateCount} data Date yang terkait.\n`;
+        }
+
+        if (errorMessage) {
+            errorMessage =
+                `Data tidak bisa dihapus karena terdapat data terkait.\n` +
+                `Judul program: ${how.nama_program}.\n` +
+                errorMessage +
+                `Silakan hapus semua data terkait terlebih dahulu.`;
+            throw new Error(errorMessage);
+        }
+
         return this.repo.delete(id, userId);
     }
 

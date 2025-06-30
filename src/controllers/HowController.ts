@@ -145,7 +145,9 @@ export class HowController {
             res.json({ message: 'Data Berhasil dihapus' });
         } catch (err) {
             console.error(err);
-            res.status(500).json({ message: 'Terjadi kesalahan saat menghapus data How' });
+            res.status(400).json({
+                message: err instanceof Error ? err.message : 'Terjadi kesalahan saat menghapus data How'
+            });
         }
     };
 
